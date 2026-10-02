@@ -43,13 +43,18 @@ jobs:
 
     - name: Configure environment variables
       run: |
-        echo "PORT=3001" >> server/.env
-        echo "DB_HOST=127.0.0.1" >> server/.env
-        echo "DB_PORT=3306" >> server/.env
-        echo "DB_USER=root" >> server/.env
-        echo "DB_PASSWORD=password" >> server/.env
-        echo "DB_NAME=tablepulse_db" >> server/.env
-        echo "JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026" >> server/.env
+        cat << 'EOF' > server/.env
+        PORT=3001
+        NODE_ENV=test
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_USER=root
+        DB_PASSWORD=password
+        DB_NAME=tablepulse_db
+        JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026
+        JWT_EXPIRY=24h
+        CLIENT_URL=http://localhost:5173
+        EOF
 
     - name: Run Database Migrations & Seeds
       run: node server/database/run-migrations.js

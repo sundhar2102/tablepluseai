@@ -7,23 +7,27 @@
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../.env'), override: true });
 
-const DB_CONFIG = {
-  host: process.env.DB_HOST || '127.0.0.1',
-  port: parseInt(process.env.DB_PORT || '3306', 10),
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  multipleStatements: true
-};
+function getDbConfig() {
+  return {
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : '',
+    multipleStatements: true
+  };
+}
 
 async function waitForDatabase(maxAttempts = 15, delayMs = 2000) {
+  const config = getDbConfig();
+  console.log(`[DB] Target Host: ${config.host}:${config.port}, User: ${config.user}`);
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const conn = await mysql.createConnection(DB_CONFIG);
+      const conn = await mysql.createConnection(config);
       await conn.ping();
       await conn.end();
-      console.log(`[DB] MySQL is ready on ${DB_CONFIG.host}:${DB_CONFIG.port}`);
+      console.log(`[DB] MySQL is ready on ${config.host}:${config.port}`);
       return true;
     } catch (err) {
       console.log(`[DB] Waiting for MySQL... (Attempt ${attempt}/${maxAttempts}: ${err.message})`);
@@ -40,7 +44,7 @@ async function runMigrations() {
 
   await waitForDatabase();
 
-  const conn = await mysql.createConnection(DB_CONFIG);
+  const conn = await mysql.createConnection(getDbConfig());
 
   try {
     const dbName = process.env.DB_NAME || 'tablepulse_db';
