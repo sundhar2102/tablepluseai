@@ -47,11 +47,8 @@ jobs:
         echo "DB_NAME=tablepulse_db" >> server/.env
         echo "JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026" >> server/.env
 
-    - name: Run Schema Migrations & Seeding
-      run: |
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_admin.sql
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
+    - name: Run Database Migrations & Seeding
+      run: node server/database/run-migrations.js
 
     - name: Start Express Server in Background
       run: |
