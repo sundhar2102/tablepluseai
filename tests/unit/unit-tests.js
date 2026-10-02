@@ -537,6 +537,25 @@ const failed = results.filter(r => r.status === 'FAIL').length;
 console.log(`Total Unit Tests Executed: ${results.length}`);
 console.log(`Passed: ${passed}`);
 console.log(`Failed: ${failed}`);
+
+try {
+  const fs = require('fs');
+  const path = require('path');
+  const reportsDir = path.resolve(__dirname, '../../reports/unit');
+  if (!fs.existsSync(reportsDir)) {
+    fs.mkdirSync(reportsDir, { recursive: true });
+  }
+  fs.writeFileSync(path.join(reportsDir, 'unit-test-results.json'), JSON.stringify({
+    total: results.length,
+    passed,
+    failed,
+    timestamp: new Date().toISOString(),
+    tests: results
+  }, null, 2));
+} catch (e) {
+  // Ignore report write error
+}
+
 if (failed > 0) {
   results.filter(r => r.status === 'FAIL').forEach(f => console.error(`❌ ${f.id} ${f.name}: ${f.error}`));
   process.exit(1);

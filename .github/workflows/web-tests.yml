@@ -23,10 +23,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
@@ -56,8 +56,9 @@ jobs:
 
     - name: Run Schema Migrations & Seeds
       run: |
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/schema.sql
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/seeds.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_admin.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
 
     - name: Start Backend Server
       run: |
@@ -67,7 +68,7 @@ jobs:
     - name: Start Frontend Client
       run: |
         cd client && npm run build
-        npx vite preview --port 5173 &
+        npx vite preview --port 5173 --host 0.0.0.0 &
         sleep 5
 
     - name: Run Web Selenium E2E Automation Suite
@@ -78,9 +79,10 @@ jobs:
 
     - name: Upload Selenium Test Reports
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: web-selenium-reports
         path: |
           reports/selenium/
           reports/uiux/
+        if-no-files-found: warn

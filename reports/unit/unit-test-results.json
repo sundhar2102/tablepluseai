@@ -1,0 +1,603 @@
+{
+  "total": 85,
+  "passed": 85,
+  "failed": 0,
+  "timestamp": "2026-10-02T18:45:30.210Z",
+  "tests": [
+    {
+      "id": "UNIT-001",
+      "name": "Haversine: Same coordinates return 0 distance",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-002",
+      "name": "Haversine: Known distance between T. Nagar and Nungambakkam (~2.1 km)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-003",
+      "name": "Haversine: Known distance between Chennai and Bangalore (~290 km)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-004",
+      "name": "Haversine: Output is numerical distance in kilometers",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-005",
+      "name": "Haversine: Zero distance for equator points at same lon",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-006",
+      "name": "Haversine: Antipodal points distance close to half Earth circumference (~20015 km)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-007",
+      "name": "Haversine: North pole to South pole distance (~20015 km)",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-008",
+      "name": "Haversine: Commutative property (dist(A,B) === dist(B,A))",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-009",
+      "name": "Haversine: Small lat offset produces positive distance",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-010",
+      "name": "Haversine: Small lng offset produces positive distance",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-011",
+      "name": "Haversine: Negative latitude handling",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-012",
+      "name": "Haversine: Negative longitude handling",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-013",
+      "name": "Haversine: Handles string number inputs gracefully",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-014",
+      "name": "Haversine: Returns valid number type",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-015",
+      "name": "Haversine: Triangle inequality holds",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-016",
+      "name": "Crowd Level: 0 total tables returns LOW",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-017",
+      "name": "Crowd Level: 0 available tables returns FULL",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-018",
+      "name": "Crowd Level: Occupancy < 40% returns LOW",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-019",
+      "name": "Crowd Level: Occupancy exactly 30% returns LOW",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-020",
+      "name": "Crowd Level: Occupancy 40% returns MODERATE",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-021",
+      "name": "Crowd Level: Occupancy 50% returns MODERATE",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-022",
+      "name": "Crowd Level: Occupancy 70% returns MODERATE",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-023",
+      "name": "Crowd Level: Occupancy 75% returns HIGH when tables available",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-024",
+      "name": "Crowd Level: Occupancy 90% with 1 table available returns HIGH",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-025",
+      "name": "Crowd Level: Reserved tables factor into occupancy ratio",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-026",
+      "name": "Crowd Level: All available tables returns LOW",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-027",
+      "name": "Crowd Level: 1 table total, occupied -> FULL",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-028",
+      "name": "Crowd Level: 1 table total, available -> LOW",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-029",
+      "name": "Crowd Level: Cleaning tables with 0 available -> FULL",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-030",
+      "name": "Crowd Level: Output is an approved enum value",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-031",
+      "name": "Wait Time: Returns 0 minutes when available > 0",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-032",
+      "name": "Wait Time: Available > 0 specifies immediate seating reason",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-033",
+      "name": "Wait Time: 0 available and cleaning > 0 returns cleaning duration",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-034",
+      "name": "Wait Time: 0 available, cleaning > 0 specifies sanitization reason",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-035",
+      "name": "Wait Time: 0 available, 0 cleaning returns turnover estimate",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-036",
+      "name": "Wait Time: Minimum wait boundary is 10 minutes when full",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-037",
+      "name": "Wait Time: Maximum wait boundary is 60 minutes",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-038",
+      "name": "Wait Time: calculationType is RULE_BASED",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-039",
+      "name": "Wait Time: confidence is CURRENT_OPERATIONAL_ESTIMATE",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-040",
+      "name": "Wait Time: isPrediction flag is false",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-041",
+      "name": "Wait Time: includes rule-based operational disclaimer",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-042",
+      "name": "Wait Time: default dining duration fallback (45m / 3 occupied = 15m)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-043",
+      "name": "Wait Time: default cleaning duration fallback (10m)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-044",
+      "name": "Wait Time: handles 0 occupied tables gracefully when full",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-045",
+      "name": "Wait Time: integer output format",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-046",
+      "name": "CheckIsOpen: Empty hours list returns closed",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-047",
+      "name": "CheckIsOpen: Day marked is_closed returns closed",
+      "status": "PASS",
+      "duration": 2,
+      "error": null
+    },
+    {
+      "id": "UNIT-048",
+      "name": "CheckIsOpen: Current time within open window returns open",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-049",
+      "name": "CheckIsOpen: Formats todayHours cleanly without trailing seconds",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-050",
+      "name": "CheckIsOpen: Handles overnight hours (18:00 to 02:00)",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-051",
+      "name": "CheckIsOpen: Missing record for current day returns closed",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-052",
+      "name": "CheckIsOpen: Valid return object schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-053",
+      "name": "CheckIsOpen: Handles null hours input",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-054",
+      "name": "CheckIsOpen: Handles undefined hours input",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-055",
+      "name": "CheckIsOpen: Formatted hours preserve AM/PM context",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-056",
+      "name": "AppError: Initializes statusCode and code correctly (404)",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-057",
+      "name": "AppError: 500 error code sets code properly",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-058",
+      "name": "AppError: Captures stack trace",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-059",
+      "name": "AppError: Inherits from JavaScript Error",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-060",
+      "name": "AppError: Carries message attribute",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-061",
+      "name": "QRHelper: generateQRToken produces valid token string",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-062",
+      "name": "QRHelper: generateQRToken produces distinct UUIDs",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-063",
+      "name": "QRHelper: Token is formatted as valid UUID v4",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-064",
+      "name": "QRHelper: Token has length of 36 chars",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-065",
+      "name": "QRHelper: Token is non-empty string",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-066",
+      "name": "QRHelper: Repeated generation maintains UUID pattern",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-067",
+      "name": "QRHelper: Token contains hex characters and hyphens only",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-068",
+      "name": "QRHelper: Export is an object containing generateQRToken",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-069",
+      "name": "QRHelper: Function execution takes under 5ms",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-070",
+      "name": "QRHelper: Token does not contain raw database secrets",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-071",
+      "name": "Constants: ROLES enum contains customer, owner, admin",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-072",
+      "name": "Constants: TABLE_STATUS contains all 4 Stage 4 states",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-073",
+      "name": "Constants: CROWD_LEVELS contains LOW, MODERATE, HIGH, FULL",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-074",
+      "name": "Joi: Valid registration passes auth schema",
+      "status": "PASS",
+      "duration": 2,
+      "error": null
+    },
+    {
+      "id": "UNIT-075",
+      "name": "Joi: Invalid email fails register schema",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-076",
+      "name": "Joi: Short password fails register schema",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-077",
+      "name": "Joi: Valid discovery query passes restaurant schema",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-078",
+      "name": "Joi: Invalid latitude (>90) fails discovery query schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-079",
+      "name": "Joi: Invalid longitude (<-180) fails discovery query schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-080",
+      "name": "Joi: Negative radius fails discovery query schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-081",
+      "name": "Joi: Valid table status passes updateTableStatusSchema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-082",
+      "name": "Joi: Invalid table status fails updateTableStatusSchema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-083",
+      "name": "Joi: Valid login schema check",
+      "status": "PASS",
+      "duration": 1,
+      "error": null
+    },
+    {
+      "id": "UNIT-084",
+      "name": "Joi: Missing password fails login schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    },
+    {
+      "id": "UNIT-085",
+      "name": "Joi: Excessively long search keyword fails discovery schema",
+      "status": "PASS",
+      "duration": 0,
+      "error": null
+    }
+  ]
+}
