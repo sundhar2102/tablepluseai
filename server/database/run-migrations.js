@@ -51,6 +51,7 @@ async function runMigrations() {
     console.log(`[DB] Ensuring database '${dbName}' exists...`);
     await conn.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
     await conn.changeUser({ database: dbName });
+    await conn.query('SET FOREIGN_KEY_CHECKS = 0;');
 
     // 1. Schema
     const schemaPath = path.resolve(__dirname, 'schema.sql');
@@ -78,6 +79,8 @@ async function runMigrations() {
       await conn.query(restSql);
       console.log('[DB] seeds/seed_restaurants.sql executed successfully.');
     }
+
+    await conn.query('SET FOREIGN_KEY_CHECKS = 1;');
 
     console.log('\n[DB] All database migrations and seeds applied successfully! ✅\n');
   } finally {
