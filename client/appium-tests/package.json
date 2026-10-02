@@ -1,0 +1,20 @@
+{
+  "name": "tablepulse-appium-tests",
+  "version": "1.0.0",
+  "description": "Appium Mobile Automation Test Suite for TablePulse AI Android Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/run-mobile-tests.js",
+    "test:smoke": "node tests/run-mobile-tests.js --smoke",
+    "test:e2e": "node tests/run-mobile-tests.js --all",
+    "report": "node utils/generate-report.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "appium": "^2.13.0",
+    "webdriverio": "^8.40.0"
+  }
+}

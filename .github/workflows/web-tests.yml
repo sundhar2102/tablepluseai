@@ -1,0 +1,86 @@
+name: TablePulse Web Selenium Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  web-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: tablepulse_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Set up Google Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
+    - name: Install dependencies
+      run: |
+        npm install
+        cd server && npm install
+        cd ../client && npm install
+        cd ../tests/selenium && npm install
+
+    - name: Configure environment variables
+      run: |
+        echo "PORT=3001" >> server/.env
+        echo "DB_HOST=127.0.0.1" >> server/.env
+        echo "DB_PORT=3306" >> server/.env
+        echo "DB_USER=root" >> server/.env
+        echo "DB_PASSWORD=password" >> server/.env
+        echo "DB_NAME=tablepulse_db" >> server/.env
+        echo "JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026" >> server/.env
+        echo "VITE_API_URL=http://localhost:3001" >> client/.env
+
+    - name: Run Schema Migrations & Seeds
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/seeds.sql
+
+    - name: Start Backend Server
+      run: |
+        node server/server.js &
+        sleep 5
+
+    - name: Start Frontend Client
+      run: |
+        cd client && npm run build
+        npx vite preview --port 5173 &
+        sleep 5
+
+    - name: Run Web Selenium E2E Automation Suite
+      run: npm run test:web
+
+    - name: Run Web UI/UX Verification Suite
+      run: npm run test:uiux
+
+    - name: Upload Selenium Test Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-selenium-reports
+        path: |
+          reports/selenium/
+          reports/uiux/

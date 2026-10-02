@@ -1,0 +1,9 @@
+{
+  "appId": "com.tablepulse.app",
+  "appName": "TablePulse AI",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

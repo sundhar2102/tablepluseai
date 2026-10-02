@@ -1,0 +1,30 @@
+{
+  "name": "tablepulse-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build:client": "npm run build --prefix client",
+    "start:server": "npm run start --prefix server",
+    "test:web": "node tests/selenium/tests/run-selenium-tests.js",
+    "test:mobile": "node client/appium-tests/tests/run-mobile-tests.js",
+    "test:unit": "node tests/unit/unit-tests.js",
+    "test:functional": "node tests/functional/functional-tests.js",
+    "test:validation": "node tests/validation/validation-tests.js",
+    "test:uiux": "node tests/uiux/uiux-tests.js",
+    "test:security": "node tests/security/security-tests.js",
+    "test:performance": "node performance/run-baseline-load.js",
+    "test:regression": "node tests/api/verify-stage5.js && node tests/api/test-stage6-part1.js",
+    "test:all": "npm run test:unit && npm run test:validation && npm run test:security && npm run test:functional && npm run test:regression && npm run test:uiux && npm run test:web && npm run test:mobile && npm run test:performance",
+    "report:excel": "node tests/utils/generateMasterCatalogs.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

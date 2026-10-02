@@ -1,0 +1,80 @@
+name: TablePulse API & Validation Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: tablepulse_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm install
+        cd server && npm install
+
+    - name: Configure test environment
+      run: |
+        cp server/.env.example server/.env || true
+        echo "PORT=3001" >> server/.env
+        echo "DB_HOST=127.0.0.1" >> server/.env
+        echo "DB_PORT=3306" >> server/.env
+        echo "DB_USER=root" >> server/.env
+        echo "DB_PASSWORD=password" >> server/.env
+        echo "DB_NAME=tablepulse_db" >> server/.env
+        echo "JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026" >> server/.env
+
+    - name: Run Schema Migrations & Seeding
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/seeds.sql
+
+    - name: Start Express Server in Background
+      run: |
+        node server/server.js &
+        sleep 5
+
+    - name: Run Validation Tests
+      run: npm run test:validation
+
+    - name: Run Functional API Tests
+      run: npm run test:functional
+
+    - name: Run Security Tests
+      run: npm run test:security
+
+    - name: Run Stage 5 & Stage 6 Regression Tests
+      run: |
+        node tests/api/verify-stage5.js
+        node tests/api/test-stage6-part1.js
+
+    - name: Upload Test Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: api-test-reports
+        path: |
+          reports/

@@ -1,0 +1,73 @@
+name: TablePulse Baseline Performance Load Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      virtual_users:
+        description: 'Number of concurrent virtual users'
+        required: false
+        default: '300'
+      duration_seconds:
+        description: 'Load test duration in seconds'
+        required: false
+        default: '60'
+
+jobs:
+  performance-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: tablepulse_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm install
+        cd server && npm install
+
+    - name: Configure environment variables
+      run: |
+        echo "PORT=3001" >> server/.env
+        echo "DB_HOST=127.0.0.1" >> server/.env
+        echo "DB_PORT=3306" >> server/.env
+        echo "DB_USER=root" >> server/.env
+        echo "DB_PASSWORD=password" >> server/.env
+        echo "DB_NAME=tablepulse_db" >> server/.env
+        echo "JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026" >> server/.env
+
+    - name: Run Schema Migrations & Seeds
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/src/database/seeds.sql
+
+    - name: Start Backend Server
+      run: |
+        node server/server.js &
+        sleep 5
+
+    - name: Run Baseline Concurrency Load Test
+      run: npm run test:performance
+
+    - name: Upload Performance Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-reports
+        path: |
+          reports/performance/

@@ -1,0 +1,237 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TablePulse AI — Global CSS
+   Stage 3 Design System: Dark Mode Only (V1)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts — must be first @import before @tailwind ───────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ── CSS Custom Properties (design tokens) ────────────────────────── */
+:root {
+  --color-brand:       #00C2A8;
+  --color-accent:      #F5A623;
+  --color-bg:          #0F1117;
+  --color-card:        #1A1E2E;
+  --color-elevated:    #222640;
+  --color-border:      #2D3250;
+  --color-input:       #1E2235;
+  --color-text:        #F1F5F9;
+  --color-text-muted:  #94A3B8;
+  --color-available:   #22C55E;
+  --color-reserved:    #F59E0B;
+  --color-occupied:    #EF4444;
+  --color-cleaning:    #8B5CF6;
+  --nav-height:        4.5rem;
+  --header-height:     4rem;
+  --sidebar-width:     16rem;
+  --radius:            0.5rem;
+  --radius-lg:         1rem;
+  --shadow-card:       0 4px 20px rgba(0,0,0,0.4);
+  --shadow-glow:       0 0 20px rgba(0,194,168,0.3);
+}
+
+/* ── Base ────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Scrollbar styling ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-card);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand);
+}
+
+/* ── Selection ───────────────────────────────────────────────────── */
+::selection {
+  background: rgba(0, 194, 168, 0.3);
+  color: var(--color-text);
+}
+
+/* ── Focus ring ──────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+/* ── Links ───────────────────────────────────────────────────────── */
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+a:hover {
+  opacity: 0.8;
+}
+
+/* ── Images ──────────────────────────────────────────────────────── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Utility Classes ─────────────────────────────────────────────── */
+@layer components {
+
+  /* Cards */
+  .card {
+    @apply bg-surface-card rounded-lg p-4 shadow-card border border-surface-border;
+  }
+  .card-elevated {
+    @apply bg-surface-elevated rounded-lg p-4 shadow-card border border-surface-border;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5
+           font-medium rounded-lg text-sm transition-all duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-text-inverse hover:bg-brand-600 active:scale-95;
+  }
+  .btn-secondary {
+    @apply btn bg-surface-elevated text-text-primary border border-surface-border
+           hover:border-brand hover:text-brand active:scale-95;
+  }
+  .btn-danger {
+    @apply btn bg-status-occupied text-white hover:opacity-90 active:scale-95;
+  }
+  .btn-ghost {
+    @apply btn text-text-secondary hover:text-text-primary hover:bg-surface-elevated;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-3.5 py-2.5 bg-surface-input text-text-primary
+           border border-surface-border rounded-lg text-sm
+           placeholder:text-text-disabled
+           focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand
+           transition-colors duration-200;
+  }
+  .input-label {
+    @apply block text-sm font-medium text-text-secondary mb-1.5;
+  }
+  .input-error {
+    @apply text-xs text-status-occupied mt-1;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-available {
+    @apply badge bg-status-available/20 text-status-available;
+  }
+  .badge-reserved {
+    @apply badge bg-status-reserved/20 text-status-reserved;
+  }
+  .badge-occupied {
+    @apply badge bg-status-occupied/20 text-status-occupied;
+  }
+  .badge-cleaning {
+    @apply badge bg-status-cleaning/20 text-status-cleaning;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-surface-border my-4;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full flex-shrink-0;
+  }
+
+  /* Page containers */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .page-container-sm {
+    @apply max-w-2xl mx-auto px-4;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply text-xl font-bold text-text-primary;
+  }
+
+  /* Skeleton loader */
+  .skeleton {
+    @apply animate-pulse bg-surface-border rounded;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    @apply inline-block w-5 h-5 border-2 border-surface-border border-t-brand
+           rounded-full animate-spin;
+  }
+}
+
+/* ── Leaflet overrides for dark mode ─────────────────────────────── */
+.leaflet-container {
+  background: #1A1E2E;
+  border-radius: var(--radius-lg);
+}
+.leaflet-control-attribution {
+  background: rgba(15,17,23,0.8) !important;
+  color: #94A3B8 !important;
+}
+.leaflet-control-zoom a {
+  background: #1A1E2E !important;
+  color: #F1F5F9 !important;
+  border-color: #2D3250 !important;
+}
+
+/* ── React Hot Toast overrides ───────────────────────────────────── */
+.hot-toast-container {
+  font-family: 'Inter', sans-serif !important;
+}

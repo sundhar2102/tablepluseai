@@ -1,0 +1,17 @@
+{
+  "name": "tablepulse-selenium-tests",
+  "version": "1.0.0",
+  "description": "Selenium WebDriver End-to-End Test Suite for TablePulse AI Web Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/run-selenium-tests.js",
+    "test:smoke": "node tests/run-selenium-tests.js --smoke",
+    "test:e2e": "node tests/run-selenium-tests.js --all",
+    "report": "node utils/generate-report.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "selenium-webdriver": "^4.27.0",
+    "xlsx": "^0.18.5"
+  }
+}
