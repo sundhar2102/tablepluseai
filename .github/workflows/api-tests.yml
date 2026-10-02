@@ -50,6 +50,7 @@ jobs:
         JWT_EXPIRY=24h
         CLIENT_URL=http://localhost:5173
         EOF
+        cp server/.env .env
 
     - name: Run Database Migrations & Seeding
       run: node server/database/run-migrations.js
@@ -58,6 +59,7 @@ jobs:
       run: |
         node server/server.js &
         sleep 5
+        curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:3001/api/health
 
     - name: Run Validation Tests
       run: npm run test:validation
