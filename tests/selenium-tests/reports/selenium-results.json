@@ -1,0 +1,137 @@
+{
+  "summary": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "passRate": "100.0",
+    "duration": 60460
+  },
+  "testResults": [
+    {
+      "id": "SEL-AUTH-001",
+      "module": "Auth",
+      "scenario": "Navigate to login page",
+      "status": "PASS",
+      "duration": 3561
+    },
+    {
+      "id": "SEL-AUTH-002",
+      "module": "Auth",
+      "scenario": "Invalid credentials error display",
+      "status": "PASS",
+      "duration": 5995
+    },
+    {
+      "id": "SEL-AUTH-003",
+      "module": "Auth",
+      "scenario": "Empty fields client-side validation",
+      "status": "PASS",
+      "duration": 844
+    },
+    {
+      "id": "SEL-AUTH-004",
+      "module": "Auth",
+      "scenario": "Customer login success",
+      "status": "PASS",
+      "duration": 4946
+    },
+    {
+      "id": "SEL-CUST-001",
+      "module": "Customer",
+      "scenario": "Load restaurants discovery list",
+      "status": "PASS",
+      "duration": 1785
+    },
+    {
+      "id": "SEL-CUST-002",
+      "module": "Customer",
+      "scenario": "Multi-restaurant list displays 5 active venues",
+      "status": "PASS",
+      "duration": 1971
+    },
+    {
+      "id": "SEL-CUST-003",
+      "module": "Customer",
+      "scenario": "Search bar filters restaurants by query",
+      "status": "PASS",
+      "duration": 3080
+    },
+    {
+      "id": "SEL-MENU-001",
+      "module": "Menu",
+      "scenario": "Navigate to restaurant detail page",
+      "status": "PASS",
+      "duration": 1758
+    },
+    {
+      "id": "SEL-MENU-002",
+      "module": "Menu",
+      "scenario": "Verify text-first cards with NO food images rendered",
+      "status": "PASS",
+      "duration": 3749
+    },
+    {
+      "id": "SEL-MENU-003",
+      "module": "Menu",
+      "scenario": "Verify dietary badges (Veg / Non-Veg) render correctly",
+      "status": "PASS",
+      "duration": 800
+    },
+    {
+      "id": "SEL-ORD-001",
+      "module": "Orders",
+      "scenario": "Add menu item to cart",
+      "status": "PASS",
+      "duration": 2743
+    },
+    {
+      "id": "SEL-ORD-002",
+      "module": "Orders",
+      "scenario": "Customer Orders page loads with proper state",
+      "status": "PASS",
+      "duration": 2440
+    },
+    {
+      "id": "SEL-BKG-001",
+      "module": "Bookings",
+      "scenario": "Customer Bookings page loads with proper state",
+      "status": "PASS",
+      "duration": 704
+    },
+    {
+      "id": "SEL-AI-001",
+      "module": "AI",
+      "scenario": "Open AI Assistant Drawer",
+      "status": "PASS",
+      "duration": 3696
+    },
+    {
+      "id": "SEL-OWN-001",
+      "module": "Owner",
+      "scenario": "Owner login and dashboard access",
+      "status": "PASS",
+      "duration": 6314
+    },
+    {
+      "id": "SEL-OWN-002",
+      "module": "Owner",
+      "scenario": "Owner menu management page loads items",
+      "status": "PASS",
+      "duration": 2342
+    },
+    {
+      "id": "SEL-OWN-003",
+      "module": "Owner",
+      "scenario": "Owner tables page loads table grid",
+      "status": "PASS",
+      "duration": 2303
+    },
+    {
+      "id": "SEL-ADM-001",
+      "module": "Admin",
+      "scenario": "Admin login and management portal access",
+      "status": "PASS",
+      "duration": 6241
+    }
+  ]
+}

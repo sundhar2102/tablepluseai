@@ -13,9 +13,14 @@ export const restaurantService = {
       const res = await api.get('/restaurants', { params });
       return { data: res.data.data, error: null };
     } catch (err) {
+      const serverErr = err.response?.data?.error;
+      const msg = serverErr?.message || err.response?.data?.message || 'Failed to fetch restaurants';
       return {
         data: null,
-        error: err.response?.data?.error || { message: 'Failed to fetch restaurants' },
+        error: {
+          code: serverErr?.code || (err.code === 'ECONNABORTED' ? 'TIMEOUT' : 'FETCH_ERROR'),
+          message: msg,
+        },
       };
     }
   },

@@ -7,6 +7,7 @@ const restaurantQuerySchema = Joi.object({
   lng: Joi.number().min(-180).max(180).optional()
     .messages({ 'number.min': 'Longitude must be between -180 and 180', 'number.max': 'Longitude must be between -180 and 180' }),
   longitude: Joi.number().min(-180).max(180).optional(),
+  lon: Joi.number().min(-180).max(180).optional(),
   radius: Joi.number().positive().max(100).default(5)
     .messages({ 'number.positive': 'Radius must be a positive number', 'number.max': 'Radius cannot exceed 100 km' }),
   search: Joi.string().trim().max(100).allow('').optional(),

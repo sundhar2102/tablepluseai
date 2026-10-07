@@ -37,5 +37,8 @@ desktop.ini
 server/uploads/*
 !server/uploads/.gitkeep
 
-# Test coverage
+# Test coverage and artifacts
 coverage/
+tests/selenium-tests/screenshots/*.png
+tests/appium-tests/screenshots/*.png
+client/.vscode/

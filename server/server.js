@@ -21,12 +21,14 @@ async function start() {
   setIO(io);
 
   // 4. Start listening
-  httpServer.listen(PORT, () => {
+  const HOST = process.env.HOST || '0.0.0.0';
+  httpServer.listen(PORT, HOST, () => {
     console.log('');
     console.log('╔══════════════════════════════════════════╗');
     console.log('║        TABLEPULSE AI — SERVER            ║');
     console.log('╠══════════════════════════════════════════╣');
     console.log(`║  HTTP   : http://localhost:${PORT}          ║`);
+    console.log(`║  LAN    : http://0.0.0.0:${PORT}            ║`);
     console.log(`║  Health : http://localhost:${PORT}/api/health ║`);
     console.log(`║  Env    : ${process.env.NODE_ENV || 'development'}                    ║`);
     console.log('╚══════════════════════════════════════════╝');

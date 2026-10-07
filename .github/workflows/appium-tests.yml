@@ -1,0 +1,57 @@
+name: TablePulse Appium Mobile E2E Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  appium-mobile-tests:
+    runs-on: macos-13 # Supports hardware virtualization for Android Emulator
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install Dependencies & Appium
+      run: |
+        npm install
+        npm --prefix tests/appium-tests install
+        npm install -g appium
+        appium driver install uiautomator2 || true
+
+    - name: Start Appium Server
+      run: |
+        appium --port 4723 --log appium.log &
+        npx wait-on -t 20000 http://localhost:4723/status || true
+
+    - name: Run Appium Mobile Tests
+      run: |
+        node tests/appium-tests/tests/run-mobile-tests.js
+
+    - name: Upload Mobile Test Reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: appium-test-artifacts
+        path: |
+          tests/appium-tests/reports/
+          tests/appium-tests/screenshots/
+          reports/

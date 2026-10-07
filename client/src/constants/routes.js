@@ -4,6 +4,7 @@ export const ROUTES = {
   HOME:         '/',
   LOGIN:        '/login',
   REGISTER:     '/register',
+  FORGOT_PASSWORD: '/forgot-password',
   OWNER_LOGIN:  '/owner/login',
   OWNER_REGISTER: '/owner/register',
   ADMIN_LOGIN:  '/admin/login',
@@ -40,4 +41,5 @@ export const ROUTES = {
   ADMIN_USERS:         '/admin/users',
   ADMIN_OWNERS:        '/admin/owners',
   ADMIN_REPORTS:       '/admin/reports',
+  ADMIN_SETTINGS:      '/admin/settings',
 };

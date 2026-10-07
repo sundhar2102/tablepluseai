@@ -4,27 +4,36 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
     "build:client": "npm run build --prefix client",
     "start:server": "npm run start --prefix server",
-    "test:web": "node tests/selenium/tests/run-selenium-tests.js",
-    "test:mobile": "node client/appium-tests/tests/run-mobile-tests.js",
-    "test:unit": "node tests/unit/unit-tests.js",
-    "test:functional": "node tests/functional/functional-tests.js",
-    "test:validation": "node tests/validation/validation-tests.js",
-    "test:uiux": "node tests/uiux/uiux-tests.js",
+    "test:e2e": "node tests/selenium-tests/tests/run-selenium-tests.js",
+    "test:selenium": "node tests/selenium-tests/tests/run-selenium-tests.js",
+    "test:appium": "node tests/appium-tests/tests/run-mobile-tests.js",
+    "test:api": "node tests/api-tests/run-api-tests.js",
+    "test:functional": "node tests/functional-tests/run-functional-tests.js",
+    "test:validation": "node tests/validation-tests/run-validation-tests.js",
     "test:security": "node tests/security/security-tests.js",
-    "test:performance": "node performance/run-baseline-load.js",
-    "test:regression": "node tests/api/verify-stage5.js && node tests/api/test-stage6-part1.js",
-    "test:all": "npm run test:unit && npm run test:validation && npm run test:security && npm run test:functional && npm run test:regression && npm run test:uiux && npm run test:web && npm run test:mobile && npm run test:performance",
-    "report:excel": "node tests/utils/generateMasterCatalogs.js"
+    "test:performance": "node tests/performance-tests/run-load-test.js",
+    "test:regression": "node tests/regression-tests/run-regression-tests.js",
+    "test:uiux": "node tests/uiux/uiux-tests.js",
+    "test:unit": "node tests/unit/unit-tests.js",
+    "test:all": "npm run test:api && npm run test:functional && npm run test:validation && npm run test:regression && npm run test:selenium && npm run test:appium && npm run report:excel",
+    "report:excel": "node tests/utils/generateMasterTestAnalysis.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "xlsx": "^0.18.5"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.6",
+    "selenium-webdriver": "^4.50.0",
+    "webdriverio": "^10.0.1"
   }
 }

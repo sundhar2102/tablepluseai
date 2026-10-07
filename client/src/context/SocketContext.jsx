@@ -1,10 +1,42 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { Capacitor } from '@capacitor/core';
 import { useAuth } from './AuthContext';
 
 const SocketContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
+const isNativeApp = () => {
+  if (typeof window === 'undefined') return false;
+  return (
+    Capacitor.isNativePlatform() ||
+    window.Capacitor?.isNativePlatform?.() ||
+    !!window.androidBridge ||
+    window.location.protocol === 'capacitor:' ||
+    (window.location.hostname === 'localhost' && window.location.port !== '5173')
+  );
+};
+
+const getSocketUrl = () => {
+  if (isNativeApp()) {
+    if (import.meta.env.VITE_MOBILE_SOCKET_URL) {
+      return import.meta.env.VITE_MOBILE_SOCKET_URL;
+    }
+    if (import.meta.env.VITE_API_HOST) {
+      const host = import.meta.env.VITE_API_HOST.trim();
+      const port = host.includes(':') ? '' : ':3001';
+      return `http://${host}${port}`;
+    }
+    const envUrl = import.meta.env.VITE_SOCKET_URL;
+    if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+      return envUrl;
+    }
+    return 'http://10.0.2.2:3001';
+  }
+  return import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
+};
+
+const SOCKET_URL = getSocketUrl();
+console.log('[Socket] Initialized Socket URL:', SOCKET_URL, '| Native detected:', isNativeApp());
 
 export function SocketProvider({ children }) {
   const { isAuthenticated } = useAuth();

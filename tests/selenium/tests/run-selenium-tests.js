@@ -125,8 +125,12 @@ for (let i = 66; i <= 85; i++) {
     'Major',
     async (driver) => {
       await driver.get(`${BASE_URL}/app/restaurants`);
-      await driver.sleep(1000);
-      const buttons = await driver.findElements(By.css('button'));
+      try {
+        await driver.wait(until.elementLocated(By.css('button, a, input')), 4000);
+      } catch (e) {
+        await driver.sleep(1000);
+      }
+      const buttons = await driver.findElements(By.css('button, a, input'));
       assert.ok(buttons.length > 0);
     }
   );
@@ -485,6 +489,10 @@ for (let i = 316; i <= 325; i++) {
   console.log('====================================================\n');
 
   if (failed > 0) {
+    testCatalog.filter(t => t.status === 'FAIL').forEach(f => {
+      console.error(`❌ ${f.id} [${f.category} / ${f.module}]: ${f.scenario}`);
+      console.error(`   Error: ${f.error}`);
+    });
     process.exit(1);
   }
 })();

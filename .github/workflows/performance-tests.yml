@@ -1,19 +1,12 @@
-name: TablePulse Baseline Performance Load Test
+name: TablePulse Performance & Load Tests
 
 on:
   workflow_dispatch:
-    inputs:
-      virtual_users:
-        description: 'Number of concurrent virtual users'
-        required: false
-        default: '300'
-      duration_seconds:
-        description: 'Load test duration in seconds'
-        required: false
-        default: '60'
+  schedule:
+    - cron: '0 2 * * 0' # Weekly run on Sundays
 
 jobs:
-  performance-tests:
+  load-test:
     runs-on: ubuntu-latest
 
     services:
@@ -30,16 +23,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    - name: Set up Node.js 22
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '22'
         cache: 'npm'
 
     - name: Install dependencies
       run: |
         npm install
-        cd server && npm install
+        npm --prefix server install
 
     - name: Configure environment variables
       run: |
@@ -55,23 +48,27 @@ jobs:
         JWT_EXPIRY=24h
         CLIENT_URL=http://localhost:5173
         EOF
+        cp server/.env .env
 
-    - name: Run Database Migrations & Seeds
-      run: node server/database/run-migrations.js
+    - name: Seed Database
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_menus.sql
+        node server/database/seed_rich_menus.js
 
     - name: Start Backend Server
       run: |
-        node server/server.js &
-        sleep 5
+        npm --prefix server start &
+        npx wait-on -t 20000 http://localhost:3001/api/health
 
-    - name: Run Baseline Concurrency Load Test
-      run: npm run test:performance
+    - name: Run 300 VU Load Test
+      run: |
+        node tests/performance-tests/run-load-test.js
 
-    - name: Upload Performance Reports
+    - name: Upload Load Test Reports
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: performance-reports
-        path: |
-          reports/performance/
-        if-no-files-found: warn
+        name: performance-artifacts
+        path: reports/

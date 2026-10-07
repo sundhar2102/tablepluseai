@@ -1,0 +1,17 @@
+{
+  "concurrentUsers": 300,
+  "durationSeconds": "64.8",
+  "totalRequests": 9939,
+  "successRequests": 6699,
+  "failedRequests": 3240,
+  "requestsPerSecond": 153.4,
+  "throughputKBps": 1843.6,
+  "errorRatePercentage": 32.6,
+  "latencyMs": {
+    "average": 1595.6,
+    "median": 1464,
+    "p90": 2440,
+    "p95": 2753,
+    "p99": 4737
+  }
+}

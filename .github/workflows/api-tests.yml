@@ -1,4 +1,4 @@
-name: TablePulse API & Validation Tests
+name: TablePulse REST API Tests
 
 on:
   push:
@@ -25,18 +25,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    - name: Set up Node.js 22
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '22'
         cache: 'npm'
 
     - name: Install dependencies
       run: |
         npm install
-        cd server && npm install
+        npm --prefix server install
 
-    - name: Configure test environment
+    - name: Configure environment variables
       run: |
         cat << 'EOF' > server/.env
         PORT=3001
@@ -52,34 +52,30 @@ jobs:
         EOF
         cp server/.env .env
 
-    - name: Run Database Migrations & Seeding
-      run: node server/database/run-migrations.js
-
-    - name: Start Express Server in Background
+    - name: Seed Database
       run: |
-        node server/server.js &
-        sleep 5
-        curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:3001/api/health
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_menus.sql
+        node server/database/seed_rich_menus.js
 
-    - name: Run Validation Tests
-      run: npm run test:validation
-
-    - name: Run Functional API Tests
-      run: npm run test:functional
-
-    - name: Run Security Tests
-      run: npm run test:security
-
-    - name: Run Stage 5 & Stage 6 Regression Tests
+    - name: Start Backend Server
       run: |
-        node tests/api/verify-stage5.js
-        node tests/api/test-stage6-part1.js
+        npm --prefix server start &
+        npx wait-on -t 20000 http://localhost:3001/api/health
 
-    - name: Upload Test Reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: api-test-reports
-        path: |
-          reports/
-        if-no-files-found: warn
+    - name: Run Master REST API Tests
+      run: |
+        node tests/api-tests/run-api-tests.js
+
+    - name: Run Data Integrity & Isolation Audit
+      run: |
+        node tests/test-production-data-integrity.js
+
+    - name: Run Dietary Intent & AI Recommendation Tests
+      run: |
+        node tests/test-dietary-intent-e2e.js
+
+    - name: Run Multi-Restaurant Menu Tests
+      run: |
+        node tests/multi-restaurant-menu-ai-test.js

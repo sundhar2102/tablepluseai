@@ -83,10 +83,11 @@ async function login({ email, password, role }) {
   return {
     token,
     user: {
-      id:    user.id,
-      name:  user.name,
-      email: user.email,
-      role:  user.role,
+      id:           user.id,
+      name:         user.name,
+      email:        user.email,
+      role:         user.role,
+      restaurantId: restaurantId || null,
     },
   };
 }
@@ -100,7 +101,15 @@ async function getUserById(userId) {
     [userId]
   );
   if (!rows[0]) throw new AppError(404, 'NOT_FOUND', 'User not found.');
-  return rows[0];
+  const user = rows[0];
+  if (user.role === 'owner') {
+    const [restRows] = await pool.query(
+      'SELECT id FROM restaurants WHERE owner_id = ? LIMIT 1',
+      [userId]
+    );
+    user.restaurantId = restRows[0]?.id || null;
+  }
+  return user;
 }
 
 /**

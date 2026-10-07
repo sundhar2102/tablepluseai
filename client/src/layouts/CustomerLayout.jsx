@@ -1,6 +1,9 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, CalendarDays, ShoppingBag, User } from 'lucide-react';
+import { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Home, Search, CalendarDays, ShoppingBag, User, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import NotificationModal from '../components/common/NotificationModal';
+import AiAssistantDrawer from '../components/common/AiAssistantDrawer';
 import toast from 'react-hot-toast';
 
 const NAV_ITEMS = [
@@ -16,24 +19,49 @@ const NAV_ITEMS = [
  * Provides the top header and bottom 5-tab navigation (Stage 3 approved).
  */
 export default function CustomerLayout({ children }) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const [notifOpen, setNotifOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    toast.success('Logged out');
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col">
       {/* Top header */}
       <header className="sticky top-0 z-40 h-header bg-surface-card border-b border-surface-border
                          flex items-center px-4 gap-3">
-        <div className="flex items-center gap-2 flex-1">
-          <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+        <Link to="/app" className="flex items-center gap-2 flex-1 group">
+          <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center transition-transform group-hover:scale-105">
             <span className="text-surface-bg font-bold text-sm">TP</span>
           </div>
-          <span className="font-bold text-lg text-text-primary">TablePulse</span>
-        </div>
-        <NotificationBell />
+          <span className="font-bold text-lg text-text-primary group-hover:text-brand transition-colors">TablePulse</span>
+        </Link>
+        <NotificationBell onOpen={() => setNotifOpen(true)} />
+        <button
+          onClick={handleLogout}
+          className="w-9 h-9 rounded-lg bg-surface-elevated flex items-center justify-center
+                     text-text-secondary hover:text-status-occupied hover:bg-status-occupied/10 transition-colors"
+          aria-label="Logout"
+          title="Logout"
+        >
+          <LogOut size={16} />
+        </button>
       </header>
+
+      {/* Notification Modal */}
+      <NotificationModal isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
 
       {/* Page content */}
       <main className="flex-1 pb-nav-bottom overflow-y-auto">
         {children}
       </main>
+
+      {/* TablePulse AI Concierge & Dining Assistant */}
+      <AiAssistantDrawer />
 
       {/* Bottom navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 h-nav-bottom
@@ -72,11 +100,12 @@ export default function CustomerLayout({ children }) {
   );
 }
 
-function NotificationBell() {
+function NotificationBell({ onOpen }) {
   return (
     <button
+      onClick={onOpen}
       className="w-9 h-9 rounded-lg bg-surface-elevated flex items-center justify-center
-                 text-text-secondary hover:text-brand transition-colors"
+                 text-text-secondary hover:text-brand transition-colors relative"
       aria-label="Notifications"
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -84,6 +113,7 @@ function NotificationBell() {
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
         <path d="M13.73 21a2 2 0 0 1-3.46 0" />
       </svg>
+      <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-brand" />
     </button>
   );
 }

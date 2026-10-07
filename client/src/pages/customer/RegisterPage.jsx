@@ -11,13 +11,14 @@ export default function CustomerRegisterPage() {
   const { register } = useAuth();
   const navigate     = useNavigate();
 
-  const [form, setForm]       = useState({ name: '', email: '', phone: '', password: '', role: 'customer' });
+  const [form, setForm]       = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '', terms: true, role: 'customer' });
   const [showPw, setShowPw]   = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors]   = useState({});
 
   const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setForm(prev => ({ ...prev, [e.target.name]: value }));
     if (errors[e.target.name]) setErrors(prev => ({ ...prev, [e.target.name]: '' }));
   };
 
@@ -28,6 +29,9 @@ export default function CustomerRegisterPage() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Enter a valid email';
     if (!form.password) errs.password = 'Password is required';
     else if (form.password.length < 8) errs.password = 'Password must be at least 8 characters';
+    if (!form.confirmPassword) errs.confirmPassword = 'Confirm your password';
+    else if (form.password !== form.confirmPassword) errs.confirmPassword = 'Passwords do not match';
+    if (!form.terms) errs.terms = 'You must accept the terms of service';
     return errs;
   };
 
@@ -37,7 +41,13 @@ export default function CustomerRegisterPage() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     setLoading(true);
-    const { data, error } = await register(form);
+    const { data, error } = await register({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      password: form.password,
+      role: form.role,
+    });
     setLoading(false);
 
     if (error) {
@@ -140,6 +150,39 @@ export default function CustomerRegisterPage() {
               </button>
             </div>
             {errors.password && <p className="input-error">{errors.password}</p>}
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label htmlFor="reg-confirm-password" className="input-label">Confirm Password</label>
+            <div className="relative">
+              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-disabled" />
+              <input
+                id="reg-confirm-password" type={showPw ? 'text' : 'password'} name="confirmPassword"
+                value={form.confirmPassword} onChange={handleChange}
+                placeholder="Re-enter your password"
+                autoComplete="new-password"
+                className={`input pl-10 pr-10 ${errors.confirmPassword ? 'border-status-occupied' : ''}`}
+              />
+            </div>
+            {errors.confirmPassword && <p className="input-error">{errors.confirmPassword}</p>}
+          </div>
+
+          {/* Terms Agreement */}
+          <div className="space-y-1 pt-1">
+            <label className="flex items-start gap-2 text-xs text-text-secondary cursor-pointer">
+              <input
+                type="checkbox"
+                name="terms"
+                checked={form.terms}
+                onChange={handleChange}
+                className="mt-0.5 rounded border-surface-border text-brand focus:ring-brand accent-brand"
+              />
+              <span>
+                I agree to TablePulse AI's terms of service and dining policies.
+              </span>
+            </label>
+            {errors.terms && <p className="input-error text-[11px]">{errors.terms}</p>}
           </div>
 
           <button type="submit" disabled={loading} className="btn-primary w-full btn-lg mt-2">

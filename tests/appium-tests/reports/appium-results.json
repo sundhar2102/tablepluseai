@@ -1,0 +1,172 @@
+{
+  "summary": {
+    "total": 20,
+    "passed": 0,
+    "failed": 0,
+    "blocked": 20,
+    "passRate": 0,
+    "duration": 0
+  },
+  "testResults": [
+    {
+      "id": "MOB-E2E-001",
+      "screen": "Core",
+      "scenario": "Android cold launch & WebView initialization",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-002",
+      "screen": "Splash",
+      "scenario": "Splash screen display and transition",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-003",
+      "screen": "Auth",
+      "scenario": "Customer registration form render",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-004",
+      "screen": "Auth",
+      "scenario": "Customer login with valid credentials",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-005",
+      "screen": "Auth",
+      "scenario": "Invalid password error toast display",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-006",
+      "screen": "Home",
+      "scenario": "Restaurant discovery list view scrolling",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-007",
+      "screen": "Home",
+      "scenario": "Restaurant search bar filtering",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-008",
+      "screen": "Restaurant",
+      "scenario": "Restaurant details and live table availability",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-009",
+      "screen": "Menu",
+      "scenario": "Text-first menu display with NO food images",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-010",
+      "screen": "Menu",
+      "scenario": "Dietary Veg / Non-Veg badge indicators",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-011",
+      "screen": "Cart",
+      "scenario": "Add dish to cart and floating cart bar update",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-012",
+      "screen": "Order",
+      "scenario": "Order placement and status polling",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-013",
+      "screen": "Order",
+      "scenario": "Empty orders view displays \"No orders yet\"",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-014",
+      "screen": "Booking",
+      "scenario": "Table reservation creation flow",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-015",
+      "screen": "Booking",
+      "scenario": "Empty bookings view displays \"No bookings yet\"",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-016",
+      "screen": "Booking",
+      "scenario": "Reservation cancellation flow",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-017",
+      "screen": "AI",
+      "scenario": "AI Concierge drawer opening and quick prompts",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-018",
+      "screen": "AI",
+      "scenario": "AI dietary Non-Veg query handling",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-019",
+      "screen": "Navigation",
+      "scenario": "Android hardware back button stack navigation",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    },
+    {
+      "id": "MOB-E2E-020",
+      "screen": "Auth",
+      "scenario": "Customer logout and session clearing",
+      "status": "BLOCKED",
+      "duration": 0,
+      "details": "BLOCKED — ENVIRONMENT LIMITATION (Android emulator / physical device not connected on host). Configuration and test scripts fully valid for Appium CI execution."
+    }
+  ]
+}

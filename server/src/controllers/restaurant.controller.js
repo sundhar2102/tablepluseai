@@ -32,6 +32,15 @@ const updateTableStatus = catchAsync(async (req, res) => {
   const { id, tableId } = req.params;
   const { status } = req.body;
 
+  if (req.user && req.user.role === 'owner') {
+    const { pool } = require('../config/db');
+    const [rRows] = await pool.query('SELECT owner_id FROM restaurants WHERE id = ?', [Number(id)]);
+    if (!rRows.length || Number(rRows[0].owner_id) !== Number(req.user.userId)) {
+      const AppError = require('../utils/AppError');
+      throw new AppError(403, 'FORBIDDEN', 'You do not have permission to manage tables for this restaurant');
+    }
+  }
+
   const data = await restaurantService.updateTableStatus(Number(id), Number(tableId), status);
   sendSuccess(res, 200, data, `Table ${data.table.tableNumber} status updated to ${status}`);
 });

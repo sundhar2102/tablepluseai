@@ -1,8 +1,9 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Grid2X2, CalendarDays,
   ShoppingBag, UtensilsCrossed, Users, BarChart3,
-  Settings, LogOut, ChevronRight
+  Settings, LogOut, ChevronRight, Menu, X, UserCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -14,6 +15,7 @@ const NAV_ITEMS = [
   { to: '/owner/orders',        icon: ShoppingBag,     label: 'Orders'        },
   { to: '/owner/menu',          icon: UtensilsCrossed, label: 'Menu'          },
   { to: '/owner/queue',         icon: Users,           label: 'Queue'         },
+  { to: '/owner/customers',     icon: UserCheck,       label: 'Customers'     },
   { to: '/owner/reports',       icon: BarChart3,       label: 'Reports'       },
   { to: '/owner/settings',      icon: Settings,        label: 'Settings'      },
 ];
@@ -25,6 +27,7 @@ const NAV_ITEMS = [
 export default function OwnerLayout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -104,19 +107,60 @@ export default function OwnerLayout({ children }) {
         {/* Top header */}
         <header className="sticky top-0 z-20 h-header bg-surface-card border-b border-surface-border
                            flex items-center justify-between px-4 md:px-6">
-          {/* Mobile: logo */}
-          <div className="flex items-center gap-2 md:hidden">
-            <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center">
-              <span className="text-surface-bg font-bold text-xs">TP</span>
-            </div>
-            <span className="font-bold text-text-primary">Owner Portal</span>
+          {/* Mobile: logo + hamburger */}
+          <div className="flex items-center justify-between w-full md:hidden">
+            <Link to="/owner" className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center">
+                <span className="text-surface-bg font-bold text-xs">TP</span>
+              </div>
+              <span className="font-bold text-text-primary text-sm">Owner Portal</span>
+            </Link>
+            <button
+              onClick={() => setMobileOpen(v => !v)}
+              className="p-1.5 rounded-lg bg-surface-elevated text-text-secondary hover:text-text-primary transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
           {/* Desktop: page title slot — filled by child pages */}
           <div className="hidden md:flex items-center" id="page-title-slot" />
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-text-disabled hidden md:block">{user?.name}</span>
+          <div className="hidden md:flex items-center gap-2">
+            <span className="text-xs text-text-disabled">{user?.name}</span>
           </div>
         </header>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileOpen && (
+          <div className="md:hidden bg-surface-card border-b border-surface-border p-3 space-y-1 animate-slide-up">
+            {NAV_ITEMS.map(({ to, icon: Icon, label, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all
+                   ${isActive
+                     ? 'bg-brand/10 text-brand border border-brand/20'
+                     : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'}`
+                }
+              >
+                <Icon size={18} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
+            <div className="pt-2 border-t border-surface-border">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-status-occupied hover:bg-status-occupied/10 transition-colors"
+              >
+                <LogOut size={16} />
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           {children}

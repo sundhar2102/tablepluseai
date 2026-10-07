@@ -1,0 +1,16 @@
+{
+  "name": "tablepulse-appium-tests",
+  "version": "1.0.0",
+  "description": "Appium Mobile Automation Test Suite for TablePulse AI Android Capacitor App",
+  "main": "tests/run-mobile-tests.js",
+  "scripts": {
+    "test": "node tests/run-mobile-tests.js",
+    "test:smoke": "node tests/run-mobile-tests.js --smoke",
+    "test:all": "node tests/run-mobile-tests.js --all"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "webdriverio": "^8.40.0",
+    "xlsx": "^0.18.5"
+  }
+}

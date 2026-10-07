@@ -12,7 +12,10 @@ export const authService = {
       const res = await api.post('/auth/register', payload);
       return { data: res.data, error: null };
     } catch (err) {
-      return { data: null, error: err.response?.data?.error || { message: 'Registration failed' } };
+      console.error('[authService] register error:', err);
+      const errMsg = err.response?.data?.error?.message 
+        || (err.response ? 'Registration failed' : `Network error: cannot reach server at ${api.defaults.baseURL || 'endpoint'} (${err.message})`);
+      return { data: null, error: err.response?.data?.error || { message: errMsg } };
     }
   },
 
@@ -25,7 +28,10 @@ export const authService = {
       localStorage.setItem('tp_user',  JSON.stringify(user));
       return { data: { token, user }, error: null };
     } catch (err) {
-      return { data: null, error: err.response?.data?.error || { message: 'Login failed' } };
+      console.error('[authService] login error:', err);
+      const errMsg = err.response?.data?.error?.message 
+        || (err.response ? 'Login failed' : `Network error: cannot reach server at ${api.defaults.baseURL || 'endpoint'} (${err.message})`);
+      return { data: null, error: err.response?.data?.error || { message: errMsg } };
     }
   },
 
@@ -35,6 +41,7 @@ export const authService = {
     } finally {
       localStorage.removeItem('tp_token');
       localStorage.removeItem('tp_user');
+      localStorage.removeItem('tp_cart');
     }
   },
 

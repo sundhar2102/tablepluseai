@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 
 import { AuthProvider }   from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
+import { CartProvider }   from './context/CartContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 
 // Layouts
@@ -10,54 +11,67 @@ import CustomerLayout from './layouts/CustomerLayout';
 import OwnerLayout    from './layouts/OwnerLayout';
 import AdminLayout    from './layouts/AdminLayout';
 
-// Public pages
+// Public auth pages
 import CustomerLoginPage   from './pages/customer/LoginPage';
 import CustomerRegisterPage from './pages/customer/RegisterPage';
+import ForgotPasswordPage  from './pages/customer/ForgotPasswordPage';
 import OwnerLoginPage      from './pages/owner/OwnerLoginPage';
+import OwnerRegisterPage   from './pages/owner/OwnerRegisterPage';
 import AdminLoginPage      from './pages/admin/AdminLoginPage';
 import NotFoundPage        from './pages/NotFoundPage';
 import UnauthorizedPage    from './pages/UnauthorizedPage';
 
 // Customer pages
-import CustomerHomePage from './pages/customer/HomePage';
+import CustomerHomePage    from './pages/customer/HomePage';
 import RestaurantDetailPage from './pages/customer/RestaurantDetailPage';
-// Stage 6 placeholders — import stubs as needed
-const PlaceholderPage = ({ title }) => (
-  <div className="page-container py-6 animate-fade-in">
-    <h1 className="section-title mb-2">{title}</h1>
-    <p className="text-text-secondary text-sm">This page will be implemented in Stage 6.</p>
-  </div>
-);
+import BookingsPage        from './pages/customer/BookingsPage';
+import BookingDetailPage   from './pages/customer/BookingDetailPage';
+import OrdersPage          from './pages/customer/OrdersPage';
+import OrderDetailPage     from './pages/customer/OrderDetailPage';
+import BillPaymentPage     from './pages/customer/BillPaymentPage';
+import QRScanPage          from './pages/customer/QRScanPage';
+import QueuePage           from './pages/customer/QueuePage';
+import CustomerProfilePage from './pages/customer/ProfilePage';
 
 // Owner pages
-import OwnerDashboardPage from './pages/owner/OwnerDashboardPage';
+import OwnerDashboardPage    from './pages/owner/OwnerDashboardPage';
+import OwnerTablesPage       from './pages/owner/OwnerTablesPage';
+import OwnerReservationsPage from './pages/owner/OwnerReservationsPage';
+import OwnerOrdersPage       from './pages/owner/OwnerOrdersPage';
+import OwnerMenuPage         from './pages/owner/OwnerMenuPage';
+import OwnerQueuePage        from './pages/owner/OwnerQueuePage';
+import OwnerCustomersPage    from './pages/owner/OwnerCustomersPage';
+import OwnerReportsPage      from './pages/owner/OwnerReportsPage';
+import OwnerSettingsPage     from './pages/owner/OwnerSettingsPage';
 
 // Admin pages
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminDashboardPage   from './pages/admin/AdminDashboardPage';
+import AdminRestaurantsPage from './pages/admin/AdminRestaurantsPage';
+import AdminApprovalsPage   from './pages/admin/AdminApprovalsPage';
+import AdminUsersPage       from './pages/admin/AdminUsersPage';
+import AdminOwnersPage      from './pages/admin/AdminOwnersPage';
+import AdminReportsPage     from './pages/admin/AdminReportsPage';
+import AdminSettingsPage    from './pages/admin/AdminSettingsPage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <SocketProvider>
-          <Routes>
+          <CartProvider>
+            <Routes>
 
             {/* ── Root redirect ───────────────────────────────────── */}
             <Route path="/" element={<Navigate to="/login" replace />} />
 
             {/* ── Public auth routes ──────────────────────────────── */}
-            <Route path="/login"          element={<CustomerLoginPage />} />
-            <Route path="/register"       element={<CustomerRegisterPage />} />
-            <Route path="/owner/login"    element={<OwnerLoginPage />} />
-            <Route path="/owner/register" element={
-              <div className="min-h-screen bg-surface-bg flex items-center justify-center p-4">
-                <div className="card max-w-sm w-full text-center py-10">
-                  <p className="text-text-secondary">Owner registration coming in Stage 6.</p>
-                </div>
-              </div>
-            } />
-            <Route path="/admin/login"    element={<AdminLoginPage />} />
-            <Route path="/unauthorized"   element={<UnauthorizedPage />} />
+            <Route path="/login"           element={<CustomerLoginPage />} />
+            <Route path="/register"        element={<CustomerRegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/owner/login"     element={<OwnerLoginPage />} />
+            <Route path="/owner/register"  element={<OwnerRegisterPage />} />
+            <Route path="/admin/login"     element={<AdminLoginPage />} />
+            <Route path="/unauthorized"    element={<UnauthorizedPage />} />
 
             {/* ── Customer routes (/app/*) ────────────────────────── */}
             <Route path="/app" element={
@@ -84,56 +98,63 @@ export default function App() {
             <Route path="/app/bookings" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
-                  <PlaceholderPage title="My Bookings" />
+                  <BookingsPage />
                 </CustomerLayout>
               </ProtectedRoute>
             } />
             <Route path="/app/bookings/:id" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
-                  <PlaceholderPage title="Booking Detail" />
+                  <BookingDetailPage />
                 </CustomerLayout>
               </ProtectedRoute>
             } />
             <Route path="/app/orders" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
-                  <PlaceholderPage title="My Orders" />
+                  <OrdersPage />
                 </CustomerLayout>
               </ProtectedRoute>
             } />
             <Route path="/app/orders/:id" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
-                  <PlaceholderPage title="Order Tracking" />
-                </CustomerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/app/profile" element={
-              <ProtectedRoute requiredRole="customer">
-                <CustomerLayout>
-                  <PlaceholderPage title="My Profile" />
-                </CustomerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/app/qr" element={
-              <ProtectedRoute requiredRole="customer">
-                <CustomerLayout>
-                  <PlaceholderPage title="Scan QR Code" />
-                </CustomerLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/app/queue/:restaurantId" element={
-              <ProtectedRoute requiredRole="customer">
-                <CustomerLayout>
-                  <PlaceholderPage title="Queue Status" />
+                  <OrderDetailPage />
                 </CustomerLayout>
               </ProtectedRoute>
             } />
             <Route path="/app/bill/:orderId" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
-                  <PlaceholderPage title="Bill & Payment" />
+                  <BillPaymentPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/app/profile" element={
+              <ProtectedRoute requiredRole="customer">
+                <CustomerLayout>
+                  <CustomerProfilePage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/app/qr" element={
+              <ProtectedRoute requiredRole="customer">
+                <CustomerLayout>
+                  <QRScanPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/app/queue" element={
+              <ProtectedRoute requiredRole="customer">
+                <CustomerLayout>
+                  <QueuePage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/app/queue/:restaurantId" element={
+              <ProtectedRoute requiredRole="customer">
+                <CustomerLayout>
+                  <QueuePage />
                 </CustomerLayout>
               </ProtectedRoute>
             } />
@@ -149,49 +170,56 @@ export default function App() {
             <Route path="/owner/tables" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Table Management" />
+                  <OwnerTablesPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/reservations" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Reservations" />
+                  <OwnerReservationsPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/orders" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Orders" />
+                  <OwnerOrdersPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/menu" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Menu Management" />
+                  <OwnerMenuPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/queue" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Queue Management" />
+                  <OwnerQueuePage />
+                </OwnerLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/owner/customers" element={
+              <ProtectedRoute requiredRole="owner">
+                <OwnerLayout>
+                  <OwnerCustomersPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/reports" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Reports" />
+                  <OwnerReportsPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
             <Route path="/owner/settings" element={
               <ProtectedRoute requiredRole="owner">
                 <OwnerLayout>
-                  <PlaceholderPage title="Settings" />
+                  <OwnerSettingsPage />
                 </OwnerLayout>
               </ProtectedRoute>
             } />
@@ -207,35 +235,42 @@ export default function App() {
             <Route path="/admin/restaurants" element={
               <ProtectedRoute requiredRole="admin">
                 <AdminLayout>
-                  <PlaceholderPage title="All Restaurants" />
+                  <AdminRestaurantsPage />
                 </AdminLayout>
               </ProtectedRoute>
             } />
             <Route path="/admin/approvals" element={
               <ProtectedRoute requiredRole="admin">
                 <AdminLayout>
-                  <PlaceholderPage title="Pending Approvals" />
+                  <AdminApprovalsPage />
                 </AdminLayout>
               </ProtectedRoute>
             } />
             <Route path="/admin/users" element={
               <ProtectedRoute requiredRole="admin">
                 <AdminLayout>
-                  <PlaceholderPage title="Customer Management" />
+                  <AdminUsersPage />
                 </AdminLayout>
               </ProtectedRoute>
             } />
             <Route path="/admin/owners" element={
               <ProtectedRoute requiredRole="admin">
                 <AdminLayout>
-                  <PlaceholderPage title="Owner Management" />
+                  <AdminOwnersPage />
                 </AdminLayout>
               </ProtectedRoute>
             } />
             <Route path="/admin/reports" element={
               <ProtectedRoute requiredRole="admin">
                 <AdminLayout>
-                  <PlaceholderPage title="Admin Reports" />
+                  <AdminReportsPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings" element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminLayout>
+                  <AdminSettingsPage />
                 </AdminLayout>
               </ProtectedRoute>
             } />
@@ -265,6 +300,7 @@ export default function App() {
               },
             }}
           />
+          </CartProvider>
         </SocketProvider>
       </AuthProvider>
     </BrowserRouter>

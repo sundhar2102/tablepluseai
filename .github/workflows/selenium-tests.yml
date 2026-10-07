@@ -1,0 +1,91 @@
+name: TablePulse Selenium Web E2E Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: tablepulse_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js 22 (LTS)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+
+    - name: Set up Google Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
+    - name: Install dependencies
+      run: |
+        npm install
+        npm --prefix server install
+        npm --prefix client install
+        npm --prefix tests/selenium-tests install
+
+    - name: Configure environment variables
+      run: |
+        cat << 'EOF' > server/.env
+        PORT=3001
+        NODE_ENV=test
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_USER=root
+        DB_PASSWORD=password
+        DB_NAME=tablepulse_db
+        JWT_SECRET=supersecretdevjwtkeyfortablepulseai2026
+        JWT_EXPIRY=24h
+        CLIENT_URL=http://localhost:5173
+        EOF
+        cp server/.env .env
+
+    - name: Seed Database
+      run: |
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
+        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_menus.sql
+        node server/database/seed_rich_menus.js
+
+    - name: Start Backend Server
+      run: |
+        npm --prefix server start &
+        npx wait-on -t 20000 http://localhost:3001/api/health
+
+    - name: Start Frontend Client
+      run: |
+        npm --prefix client run dev &
+        npx wait-on -t 30000 http://localhost:5173
+
+    - name: Run Selenium Web E2E Tests
+      run: |
+        node tests/selenium-tests/tests/run-selenium-tests.js
+
+    - name: Upload Selenium Test Reports & Screenshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: selenium-test-artifacts
+        path: |
+          tests/selenium-tests/reports/
+          tests/selenium-tests/screenshots/
+          reports/

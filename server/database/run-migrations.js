@@ -80,6 +80,15 @@ async function runMigrations() {
       console.log('[DB] seeds/seed_restaurants.sql executed successfully.');
     }
 
+    // 4. Seeds: seed_menus.sql
+    const seedMenuPath = path.resolve(__dirname, 'seeds/seed_menus.sql');
+    if (fs.existsSync(seedMenuPath)) {
+      console.log('[DB] Executing seeds/seed_menus.sql...');
+      const menuSql = fs.readFileSync(seedMenuPath, 'utf-8');
+      await conn.query(menuSql);
+      console.log('[DB] seeds/seed_menus.sql executed successfully.');
+    }
+
     await conn.query('SET FOREIGN_KEY_CHECKS = 1;');
 
     console.log('\n[DB] All database migrations and seeds applied successfully! ✅\n');

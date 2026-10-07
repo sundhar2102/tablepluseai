@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TablePulse AI - Selenium Web E2E Test Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { background: #1e293b; padding: 24px; border-radius: 12px; margin-bottom: 24px; border: 1px solid #334155; }
+    h1 { margin: 0 0 12px 0; color: #38bdf8; font-size: 24px; }
+    .stats { display: flex; gap: 16px; margin-top: 16px; }
+    .stat-card { background: #0f172a; padding: 12px 20px; border-radius: 8px; border: 1px solid #334155; flex: 1; text-align: center; }
+    .stat-val { font-size: 24px; font-weight: bold; }
+    .stat-val.passed { color: #4ade80; }
+    .stat-val.failed { color: #f87171; }
+    .table-container { background: #1e293b; border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #334155; }
+    th { background: #0f172a; color: #94a3b8; font-size: 13px; text-transform: uppercase; }
+    tr:hover { background: #334155; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+    .badge.pass { background: #14532d; color: #4ade80; border: 1px solid #166534; }
+    .badge.fail { background: #7f1d1d; color: #f87171; border: 1px solid #991b1b; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚀 TablePulse AI — Selenium Web E2E Test Report</h1>
+      <p style="color: #94a3b8; margin: 0;">Automated Web Browser Verification Suite • Base URL: http://localhost:5173</p>
+      <div class="stats">
+        <div class="stat-card"><div>Total Tests</div><div class="stat-val">18</div></div>
+        <div class="stat-card"><div>Passed</div><div class="stat-val passed">18</div></div>
+        <div class="stat-card"><div>Failed</div><div class="stat-val failed">0</div></div>
+        <div class="stat-card"><div>Pass Rate</div><div class="stat-val passed">100.0%</div></div>
+        <div class="stat-card"><div>Duration</div><div class="stat-val">60.5s</div></div>
+      </div>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Test ID</th>
+            <th>Module</th>
+            <th>Scenario</th>
+            <th>Status</th>
+            <th>Duration</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><code>SEL-AUTH-001</code></td>
+              <td>Auth</td>
+              <td>Navigate to login page</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>3561ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-AUTH-002</code></td>
+              <td>Auth</td>
+              <td>Invalid credentials error display</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>5995ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-AUTH-003</code></td>
+              <td>Auth</td>
+              <td>Empty fields client-side validation</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>844ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-AUTH-004</code></td>
+              <td>Auth</td>
+              <td>Customer login success</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>4946ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-CUST-001</code></td>
+              <td>Customer</td>
+              <td>Load restaurants discovery list</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>1785ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-CUST-002</code></td>
+              <td>Customer</td>
+              <td>Multi-restaurant list displays 5 active venues</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>1971ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-CUST-003</code></td>
+              <td>Customer</td>
+              <td>Search bar filters restaurants by query</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>3080ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-MENU-001</code></td>
+              <td>Menu</td>
+              <td>Navigate to restaurant detail page</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>1758ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-MENU-002</code></td>
+              <td>Menu</td>
+              <td>Verify text-first cards with NO food images rendered</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>3749ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-MENU-003</code></td>
+              <td>Menu</td>
+              <td>Verify dietary badges (Veg / Non-Veg) render correctly</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>800ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-ORD-001</code></td>
+              <td>Orders</td>
+              <td>Add menu item to cart</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>2743ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-ORD-002</code></td>
+              <td>Orders</td>
+              <td>Customer Orders page loads with proper state</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>2440ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-BKG-001</code></td>
+              <td>Bookings</td>
+              <td>Customer Bookings page loads with proper state</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>704ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-AI-001</code></td>
+              <td>AI</td>
+              <td>Open AI Assistant Drawer</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>3696ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-OWN-001</code></td>
+              <td>Owner</td>
+              <td>Owner login and dashboard access</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>6314ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-OWN-002</code></td>
+              <td>Owner</td>
+              <td>Owner menu management page loads items</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>2342ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-OWN-003</code></td>
+              <td>Owner</td>
+              <td>Owner tables page loads table grid</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>2303ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+            <tr>
+              <td><code>SEL-ADM-001</code></td>
+              <td>Admin</td>
+              <td>Admin login and management portal access</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td>6241ms</td>
+              <td style="color: #94a3b8; font-size: 12px;">Verified successfully</td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

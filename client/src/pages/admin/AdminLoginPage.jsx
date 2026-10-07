@@ -15,9 +15,9 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); setError('');
-    const { data, err } = await login(form.email, form.password, 'admin');
+    const { data, error } = await login(form.email, form.password, 'admin');
     setLoading(false);
-    if (err) { setError(err.message || 'Login failed'); return; }
+    if (error) { setError(error.message || 'Login failed'); return; }
     toast.success('Admin access granted');
     navigate('/admin');
   };
