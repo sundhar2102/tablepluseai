@@ -71,8 +71,8 @@ jobs:
 
     - name: Start Frontend Client
       run: |
-        npm --prefix client run dev &
-        npx wait-on -t 30000 http://localhost:5173
+        npm --prefix client run dev -- --host &
+        npx wait-on -t 30000 http://127.0.0.1:5173
 
     - name: Run Selenium Web E2E Tests
       run: |
