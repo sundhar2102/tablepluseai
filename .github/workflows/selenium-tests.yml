@@ -61,9 +61,7 @@ jobs:
 
     - name: Seed Database
       run: |
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/schema.sql
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_restaurants.sql
-        mysql -h 127.0.0.1 -u root -ppassword tablepulse_db < server/database/seeds/seed_menus.sql
+        node server/database/run-migrations.js
         node server/database/seed_rich_menus.js
 
     - name: Start Backend Server
