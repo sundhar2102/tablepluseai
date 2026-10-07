@@ -77,3 +77,16 @@ jobs:
     - name: Run Multi-Restaurant Menu Tests
       run: |
         node tests/multi-restaurant-menu-ai-test.js
+
+    - name: Generate Test Report
+      if: always()
+      run: |
+        node tests/utils/generateMasterTestAnalysis.js
+
+    - name: Upload API Test Artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-test-reports
+        path: |
+          reports/
