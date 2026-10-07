@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Functional Test Suite (105 Functional Tests)
+ * Smart Table AI - Functional Test Suite (105 Functional Tests)
  * IDs: FUNC-001 to FUNC-105
  */
 
@@ -618,7 +618,7 @@ async function request(path, options = {}) {
 
   // Summary
   console.log('====================================================');
-  console.log('     TABLEPULSE AI — FUNCTIONAL TEST RESULTS        ');
+  console.log('     SMART TABLE AI — FUNCTIONAL TEST RESULTS       ');
   console.log('====================================================');
   const passed = results.filter(r => r.status === 'PASS').length;
   const failed = results.filter(r => r.status === 'FAIL').length;

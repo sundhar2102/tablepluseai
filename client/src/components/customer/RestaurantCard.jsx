@@ -5,7 +5,7 @@ import { CROWD_LEVELS } from '../../constants/tableStatus';
 export default function RestaurantCard({ restaurant }) {
   const {
     id,
-    name = 'TablePulse Restaurant',
+    name = 'Smart Table Restaurant',
     cuisineType = 'Multi-Cuisine & Contemporary',
     address = '42 Usman Road, T. Nagar, Chennai 600017',
     coverPhotoUrl,
@@ -46,7 +46,7 @@ export default function RestaurantCard({ restaurant }) {
             <span>{isOpen ? 'Open Now' : 'Closed'}</span>
           </span>
 
-          {/* TablePulse Verified Badge */}
+          {/* Smart Table Verified Badge */}
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-brand text-surface-bg backdrop-blur-md shadow-sm">
             <Sparkles size={11} />
             Verified Dining
@@ -90,7 +90,7 @@ export default function RestaurantCard({ restaurant }) {
           <div className="flex items-center justify-between text-xs">
             <span className="inline-flex items-center gap-1.5 font-bold text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live TablePulse Metrics
+              Live Smart Table Metrics
             </span>
             <span className="text-[11px] text-text-muted">Real-time sync</span>
           </div>

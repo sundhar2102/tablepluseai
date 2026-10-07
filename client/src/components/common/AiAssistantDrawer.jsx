@@ -29,7 +29,7 @@ export default function AiAssistantDrawer() {
     if (restId) {
       return {
         role: 'assistant',
-        content: `👋 **Welcome to this restaurant!**\n\nI am your live TablePulse Dining Assistant. I can recommend dishes from our current menu, check table availability, filter by diet (Pure Veg, Non-Veg, Spicy), or suggest dishes within your budget.\n\nWhat would you like to explore?`,
+        content: `👋 **Welcome to this restaurant!**\n\nI am your live Smart Table AI Dining Assistant. I can recommend dishes from our current menu, check table availability, filter by diet (Pure Veg, Non-Veg, Spicy), or suggest dishes within your budget.\n\nWhat would you like to explore?`,
         suggestedRestaurants: [],
         recommendedItems: [],
         restaurantId: restId
@@ -37,7 +37,7 @@ export default function AiAssistantDrawer() {
     }
     return {
       role: 'assistant',
-      content: `👋 **Hello! I'm your TablePulse AI Dining Concierge.**\n\nI can recommend restaurants across Chennai, check live table seating, accommodate dietary restrictions, or help you find your next great meal. How can I help you dine today?`,
+      content: `👋 **Hello! I'm your Smart Table AI Dining Concierge.**\n\nI can recommend restaurants across Chennai, check live table seating, accommodate dietary restrictions, or help you find your next great meal. How can I help you dine today?`,
       suggestedRestaurants: [],
       recommendedItems: [],
       restaurantId: null
@@ -192,7 +192,7 @@ export default function AiAssistantDrawer() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold text-text-primary">TablePulse AI</h3>
+                  <h3 className="text-sm font-bold text-text-primary">Smart Table AI</h3>
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand/10 text-brand font-medium">
                     {currentRestaurantId ? 'Restaurant Assistant' : 'Concierge'}
                   </span>
@@ -313,7 +313,7 @@ export default function AiAssistantDrawer() {
                     </div>
                   )}
 
-                  {/* Suggested Restaurant Action Cards (When exploring across TablePulse) */}
+                  {/* Suggested Restaurant Action Cards (When exploring across Smart Table AI) */}
                   {m.suggestedRestaurants && m.suggestedRestaurants.length > 0 && (
                     <div className="mt-2.5 pt-2 border-t border-surface-border/60 space-y-1.5">
                       <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">Suggested Dining Spots</p>

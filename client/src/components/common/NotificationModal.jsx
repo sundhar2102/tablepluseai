@@ -30,7 +30,7 @@ const INITIAL_NOTIFICATIONS = [
   },
   {
     id: 4,
-    title: 'Welcome to TablePulse AI',
+    title: 'Welcome to Smart Table AI',
     message: 'Discover real restaurants, reserve tables, track wait times and dine smarter.',
     type: 'system',
     time: '2 days ago',

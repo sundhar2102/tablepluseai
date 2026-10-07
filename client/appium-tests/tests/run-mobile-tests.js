@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Mobile Appium E2E Automation Runner
+ * Smart Table AI - Mobile Appium E2E Automation Runner
  * 325 Unique Mobile Test Cases (MOB-E2E-001 to MOB-E2E-325)
  * Inspects ADB for connected devices/emulators.
  * Generates reports/appium/TablePulse_Mobile_Appium_Test_Report.xlsx
@@ -416,7 +416,7 @@ for (let i = 321; i <= 325; i++) {
 // -----------------------------------------------------------------------------
 (async () => {
   console.log('====================================================');
-  console.log('  TABLEPULSE AI — MOBILE APPIUM AUTOMATION RUNNER   ');
+  console.log('  SMART TABLE AI — MOBILE APPIUM AUTOMATION RUNNER  ');
   console.log(`  Total Mobile Test Cases Cataloged: ${testCatalog.length}`);
   console.log('====================================================\n');
 

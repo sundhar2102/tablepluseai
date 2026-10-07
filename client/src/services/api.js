@@ -68,7 +68,7 @@ api.interceptors.request.use(
       };
       return Promise.reject(err);
     }
-    const token = localStorage.getItem('tp_token');
+    const token = localStorage.getItem('smarttable_token') || localStorage.getItem('tp_token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

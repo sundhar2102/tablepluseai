@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Store, User, Mail, Phone, Lock, Eye, EyeOff, MapPin, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import SmartTableLogo from '../../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 export default function OwnerRegisterPage() {
@@ -91,13 +92,11 @@ export default function OwnerRegisterPage() {
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col items-center justify-center px-4 py-8">
       {/* Brand Header */}
-      <div className="mb-6 text-center animate-fade-in">
-        <div className="w-14 h-14 rounded-2xl bg-brand mx-auto mb-3 flex items-center justify-center shadow-glow">
-          <Store size={26} className="text-surface-bg" />
-        </div>
-        <h1 className="text-xl font-bold text-text-primary">Restaurant Partner Portal</h1>
-        <p className="text-text-secondary text-xs mt-1">
-          Join TablePulse AI to manage live table occupancy and reservations
+      <div className="mb-6 text-center animate-fade-in flex flex-col items-center">
+        <SmartTableLogo variant="full" size="md" subtitle="Restaurant Partner" />
+        <h1 className="text-xl font-bold text-text-primary mt-2">Partner Registration</h1>
+        <p className="text-text-secondary text-xs mt-0.5">
+          Join Smart Table AI to manage live table occupancy and reservations
         </p>
       </div>
 
@@ -246,7 +245,7 @@ export default function OwnerRegisterPage() {
                 className="mt-0.5 rounded border-surface-border text-brand focus:ring-brand accent-brand"
               />
               <span>
-                I represent an authorized dining venue and agree to the TablePulse Merchant Terms.
+                I represent an authorized dining venue and agree to the Smart Table AI Merchant Terms.
               </span>
             </label>
             {errors.terms && <p className="input-error text-[11px]">{errors.terms}</p>}

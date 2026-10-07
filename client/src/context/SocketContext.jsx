@@ -54,7 +54,7 @@ export function SocketProvider({ children }) {
       return;
     }
 
-    const token = localStorage.getItem('tp_token');
+    const token = localStorage.getItem('smarttable_token') || localStorage.getItem('tp_token');
     if (!token) return;
 
     // Create socket connection with JWT auth

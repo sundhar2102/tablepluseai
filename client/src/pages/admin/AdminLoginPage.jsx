@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Shield, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import SmartTableLogo from '../../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 export default function AdminLoginPage() {
@@ -24,12 +25,10 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col items-center justify-center px-4">
-      <div className="mb-8 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-accent/20 border border-accent/30 mx-auto mb-4 flex items-center justify-center">
-          <Shield size={28} className="text-accent" />
-        </div>
-        <h1 className="text-2xl font-bold text-text-primary">Admin Access</h1>
-        <p className="text-text-secondary text-sm mt-1">TablePulse AI — Super Admin</p>
+      <div className="mb-8 text-center flex flex-col items-center">
+        <SmartTableLogo variant="full" size="lg" subtitle="Super Admin Control" />
+        <h1 className="text-xl font-bold text-text-primary mt-3">Platform Administration</h1>
+        <p className="text-text-secondary text-xs mt-1">Smart Table AI — Global System Operations</p>
       </div>
 
       <div className="w-full max-w-sm card">
@@ -46,7 +45,7 @@ export default function AdminLoginPage() {
               <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-disabled" />
               <input id="admin-email" type="email" value={form.email}
                 onChange={e => setForm(p => ({...p, email: e.target.value}))}
-                placeholder="admin@tablepulse.app" className="input pl-10" />
+                placeholder="admin@smarttable.ai" className="input pl-10" />
             </div>
           </div>
           <div>

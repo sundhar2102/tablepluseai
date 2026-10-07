@@ -66,7 +66,7 @@ export default function OwnerReportsPage() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `TablePulse_${data.restaurantName || 'Restaurant'}_Analytics_${timeframe}.csv`);
+    link.setAttribute('download', `SmartTable_${data.restaurantName || 'Restaurant'}_Analytics_${timeframe}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

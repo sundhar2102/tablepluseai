@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Selenium Web E2E Master Test Runner
+ * Smart Table AI - Selenium Web E2E Master Test Runner
  * Covers: Authentication, Customer, Owner, Admin, Menu (Text-first), AI Chatbot, Order, Booking, Real-time
  */
 const { createDriver } = require('../utils/driverFactory');
@@ -19,7 +19,7 @@ const AIConciergePage = require('../pages/AIConciergePage');
 
 async function runSeleniumTestSuite() {
   console.log('============================================================');
-  console.log('🌐 RUNNING TABLEPULSE AI — SELENIUM WEB E2E TEST SUITE');
+  console.log('🌐 RUNNING SMART TABLE AI — SELENIUM WEB E2E TEST SUITE');
   console.log(`   Base URL: ${config.baseUrl} | Headless: ${config.headless}`);
   console.log('============================================================\n');
 

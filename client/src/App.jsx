@@ -5,6 +5,7 @@ import { AuthProvider }   from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import { CartProvider }   from './context/CartContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
+import OfflineBanner      from './components/common/OfflineBanner';
 
 // Layouts
 import CustomerLayout from './layouts/CustomerLayout';
@@ -300,6 +301,7 @@ export default function App() {
               },
             }}
           />
+          <OfflineBanner />
           </CartProvider>
         </SocketProvider>
       </AuthProvider>

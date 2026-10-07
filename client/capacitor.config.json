@@ -1,6 +1,6 @@
 {
   "appId": "com.tablepulse.app",
-  "appName": "TablePulse AI",
+  "appName": "Smart Table AI",
   "webDir": "dist",
   "bundledWebRuntime": false,
   "android": {

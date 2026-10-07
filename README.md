@@ -1,39 +1,66 @@
-# TablePulse AI
+# Smart Table AI
 
 > **"Know the Crowd. Get Your Table. Dine Smarter."**
 
-Real-time restaurant table availability, reservation, ordering and intelligent wait-time estimation platform.
+Real-time restaurant table availability, reservation, pre-ordering, and intelligent dining platform for Web and Android.
+
+---
+
+## Architecture Overview
+
+```
+                      ┌──────────────────────┐
+                      │    Smart Table AI    │
+                      │  (Web & Android App) │
+                      └──────────┬───────────┘
+                                 │
+                   HTTP REST / WebSocket (Socket.IO)
+                                 │
+                                 ▼
+                      ┌──────────────────────┐
+                      │ Express.js API & WS  │
+                      │   (Node.js Backend)  │
+                      └──────────┬───────────┘
+                                 │
+                                 ▼
+                      ┌──────────────────────┐
+                      │  MySQL / MariaDB     │
+                      │   (Relational DB)    │
+                      └──────────────────────┘
+```
+
+Both the **Web Application** and the **Android Application** (via Capacitor native container) communicate with the same backend API and Socket.IO server for instant two-way synchronization of:
+* Orders (Received ➔ Preparing ➔ Ready ➔ Served ➔ Completed)
+* Table Seating Status (Available ➔ Occupied ➔ Cleaning ➔ Available)
+* Reservations & Live Walk-In Queue
+* AI Concierge Recommendations & Dietary Intent Parsing
 
 ---
 
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- MySQL 8.0
+- Node.js 18+ (tested on Node.js 22 LTS)
+- MySQL 8.0 / MariaDB 10.4+
 - npm
 
 ### 1. Database Setup
 
-```sql
--- Run these files in order:
-mysql -u root -p < server/database/schema.sql
-mysql -u root -p tablepulse_db < server/database/seeds/seed_admin.sql
+```bash
+# Run database migrations and seed data:
+node server/database/run-migrations.js
+node server/database/seed_rich_menus.js
 ```
 
 ### 2. Backend (Server)
 
 ```bash
 cd server
-# Copy and edit your environment variables:
-cp .env.example .env
-# Update DB_PASSWORD and JWT_SECRET in .env
-
 npm install
 npm run dev   # Starts on http://localhost:3001
 ```
 
-### 3. Frontend (Client)
+### 3. Frontend (Web & Mobile Client)
 
 ```bash
 cd client
@@ -41,83 +68,34 @@ npm install
 npm run dev   # Starts on http://localhost:5173
 ```
 
----
+### 4. Android Build (Capacitor)
 
-## Project Structure
-
-```
-TABLEPULSE AI/
-├── client/                 # React + Vite frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── constants/      # Route paths, status enums
-│   │   ├── context/        # AuthContext, SocketContext
-│   │   ├── layouts/        # Customer, Owner, Admin layouts
-│   │   ├── pages/          # Page components by role
-│   │   └── services/       # API service layer
-│   └── package.json
-│
-├── server/                 # Express + Socket.IO backend
-│   ├── database/
-│   │   ├── schema.sql      # MySQL schema (12 tables)
-│   │   └── seeds/          # Development seed data
-│   ├── src/
-│   │   ├── config/         # DB connection, constants
-│   │   ├── controllers/    # Route handlers
-│   │   ├── middleware/     # Auth, validation, error handling
-│   │   ├── routes/         # Express route definitions
-│   │   ├── services/       # Business logic
-│   │   ├── socket/         # Socket.IO handler + emitters
-│   │   ├── utils/          # AppError, catchAsync, helpers
-│   │   ├── validations/    # Joi schemas
-│   │   └── app.js          # Express application
-│   └── server.js           # Server entry point
-│
-├── docs/                   # Stage documents
-├── tests/                  # Test suites (Stage 7)
-└── package.json            # Root workspace
+```bash
+cd client
+npm run build
+npx cap sync android
 ```
 
----
-
-## Development Accounts (Seed Data)
-
-| Role     | Email                    | Password   |
-|----------|--------------------------|------------|
-| Admin    | admin@tablepulse.app     | Demo@1234  |
-| Owner    | owner@demo.com           | Demo@1234  |
-| Customer | customer@demo.com        | Demo@1234  |
-
-> ⚠️ **Change all passwords before any production deployment.**
+The compiled web assets are embedded directly into `android/app/src/main/assets/public/`. The installed APK launches independently without requiring a laptop connection, ADB, or Vite dev server.
 
 ---
 
-## Tech Stack
+## Default Test Accounts
 
-| Layer       | Technology          |
-|-------------|---------------------|
-| Frontend    | React 18, Vite 5    |
-| Styling     | Tailwind CSS 3      |
-| Routing     | React Router v6     |
-| Real-time   | Socket.IO 4         |
-| HTTP Client | Axios               |
-| Backend     | Express 4           |
-| Database    | MySQL 8.0 (InnoDB)  |
-| Auth        | JWT (bcrypt 12)     |
-| Validation  | Joi                 |
+| Role     | Email                | Password   | Access Level |
+|----------|----------------------|------------|--------------|
+| Admin    | admin@smarttable.ai  | Demo@1234  | Platform Admin Portal |
+| Owner    | owner@demo.com       | Demo@1234  | Restaurant Owner Operations |
+| Customer | customer@demo.com    | Demo@1234  | Customer Dining & Orders |
 
 ---
 
-## Stage Progress
+## Automated Test Suites
 
-| Stage | Name                        | Status    |
-|-------|-----------------------------|-----------|
-| 1     | Planning                    | ✅ Done   |
-| 2     | Requirements Definition     | ✅ Done   |
-| 3     | UI/UX Design                | ✅ Done   |
-| 4     | Architecture & DB Design    | ✅ Done   |
-| 5     | Application Building        | ✅ Done   |
-| 6     | Feature Implementation      | 🔜 Next   |
-| 7     | Testing & Bug Fixing        | 🔜 Pending |
-| 8     | Deployment                  | 🔜 Pending |
+The project includes 300+ automated test cases:
+* **API Tests:** `npm run test:api` (20 cases)
+* **Functional Tests:** `npm run test:functional` (105 cases)
+* **Validation Tests:** `npm run test:validation` (85 cases)
+* **Regression Tests:** `npm run test:regression` (Branding, Data Integrity, Dietary Intent, Multi-Restaurant)
+* **Selenium Web E2E:** `npm run test:selenium` (18 cases, headless Chrome)
+* **Master Excel Analysis:** `npm run report:excel` (15 sheets in `reports/Smart_Table_AI_Test_Analysis.xlsx`)

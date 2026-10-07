@@ -25,7 +25,7 @@ async function start() {
   httpServer.listen(PORT, HOST, () => {
     console.log('');
     console.log('╔══════════════════════════════════════════╗');
-    console.log('║        TABLEPULSE AI — SERVER            ║');
+    console.log('║        SMART TABLE AI — SERVER           ║');
     console.log('╠══════════════════════════════════════════╣');
     console.log(`║  HTTP   : http://localhost:${PORT}          ║`);
     console.log(`║  LAN    : http://0.0.0.0:${PORT}            ║`);

@@ -1,0 +1,21 @@
+{
+  "short_name": "Smart Table AI",
+  "name": "Smart Table AI - Live Table Booking & Dining Platform",
+  "icons": [
+    {
+      "src": "/logo-icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "48x48 72x72 96x96"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0F121C",
+  "theme_color": "#00C2A8",
+  "display": "standalone",
+  "orientation": "portrait"
+}

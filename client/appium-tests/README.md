@@ -1,7 +1,7 @@
-# TablePulse AI — Mobile Appium Automation Suite
+# Smart Table AI — Mobile Appium Automation Suite
 
 ## Overview
-This directory contains the professional mobile test automation framework for TablePulse AI's Android mobile application (built using Capacitor). It uses Appium with the `UiAutomator2` automation engine and follows the Screen Object Model (SOM) architecture.
+This directory contains the professional mobile test automation framework for Smart Table AI's Android mobile application (built using Capacitor). It uses Appium with the `UiAutomator2` automation engine and follows the Screen Object Model (SOM) architecture.
 
 ---
 

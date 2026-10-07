@@ -17,7 +17,7 @@ import toast from 'react-hot-toast';
 const INITIAL_RESTAURANTS = [
   {
     id: 1,
-    name: 'TablePulse Restaurant',
+    name: 'The Spice Pavilion',
     cuisine: 'Multi-Cuisine & Contemporary',
     city: 'Chennai',
     area: 'T. Nagar',

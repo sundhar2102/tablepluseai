@@ -39,7 +39,7 @@ async function waitForDatabase(maxAttempts = 15, delayMs = 2000) {
 
 async function runMigrations() {
   console.log('====================================================');
-  console.log('       TABLEPULSE AI — DATABASE MIGRATIONS          ');
+  console.log('       SMART TABLE AI — DATABASE MIGRATIONS         ');
   console.log('====================================================\n');
 
   await waitForDatabase();

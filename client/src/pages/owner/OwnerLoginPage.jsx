@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Store, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import SmartTableLogo from '../../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 /**
@@ -45,12 +46,9 @@ export default function OwnerLoginPage() {
 
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col items-center justify-center px-4">
-      <div className="mb-8 text-center animate-fade-in">
-        <div className="w-16 h-16 rounded-2xl bg-brand mx-auto mb-4 flex items-center justify-center shadow-glow">
-          <Store size={28} className="text-surface-bg" />
-        </div>
-        <h1 className="text-2xl font-bold text-text-primary">Owner Portal</h1>
-        <p className="text-text-secondary text-sm mt-1">Manage your restaurant in real time</p>
+      <div className="mb-8 text-center animate-fade-in flex flex-col items-center">
+        <SmartTableLogo variant="full" size="lg" subtitle="Restaurant Owner Portal" />
+        <p className="text-text-secondary text-sm mt-2">Manage live tables, digital orders & bookings</p>
       </div>
 
       <div className="w-full max-w-sm card animate-slide-up">

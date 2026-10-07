@@ -112,7 +112,7 @@ export default function BillPaymentPage() {
         <div className="flex items-center justify-between pb-3 border-b border-surface-border">
           <div>
             <h2 className="font-bold text-base text-text-primary">
-              {order.restaurant?.name || 'TablePulse Partner'}
+              {order.restaurant?.name || 'Smart Table Partner'}
             </h2>
             <p className="text-xs text-text-secondary">
               Table {order.table?.tableNumber || 'Self-Order'}
@@ -192,7 +192,7 @@ export default function BillPaymentPage() {
                 Transaction ID: {paymentRef}
               </p>
               <p className="text-[11px] text-text-muted">
-                Method: {paymentMethod.toUpperCase()} | Thank you for dining with TablePulse!
+                Method: {paymentMethod.toUpperCase()} | Thank you for dining with Smart Table AI!
               </p>
             </div>
             <div className="flex items-center justify-center gap-2 pt-2">

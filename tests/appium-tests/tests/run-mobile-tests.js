@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Mobile Appium E2E Automation Runner
+ * Smart Table AI - Mobile Appium E2E Automation Runner
  * Covers: App launch, Login, Registration, Restaurant Discovery, Text-First Menu,
  * Orders, Bookings, AI Concierge, Android Back Navigation, Device Detection
  */
@@ -10,7 +10,7 @@ const { capabilities, serverConfig, reportsDir } = require('../config/capabiliti
 
 async function runMobileTestSuite() {
   console.log('============================================================');
-  console.log('📱 RUNNING TABLEPULSE AI — APPIUM MOBILE E2E TEST SUITE');
+  console.log('📱 RUNNING SMART TABLE AI — APPIUM MOBILE E2E TEST SUITE');
   console.log(`   Target Package: ${capabilities['appium:appPackage']}`);
   console.log('============================================================\n');
 

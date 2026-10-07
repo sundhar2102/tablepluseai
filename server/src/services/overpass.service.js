@@ -247,9 +247,9 @@ function normalizeOsmElement(element, userLat, userLon) {
     todayHours,
     openingHours: tags.opening_hours || null,
     sourceUrl: `https://www.openstreetmap.org/${element.type}/${element.id}`,
-    attribution: '© OpenStreetMap contributors',
-    // TablePulse Operational Flags (Explicit separation)
+    // Smart Table Operational Flags (Explicit separation)
     tablepulse_registered: false,
+    smart_table_registered: false,
     operational_data_available: false,
     tableAvailability: null,
     crowdLevel: null,
@@ -272,7 +272,7 @@ async function executeOverpassQuery(query) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'User-Agent': 'TablePulse-AI/1.0 (OpenStreetMap Integration; contact: admin@tablepulse.app)',
+          'User-Agent': 'Smart-Table-AI/1.0 (OpenStreetMap Integration; contact: admin@smarttable.ai)',
           'Accept': '*/*',
         },
         body: `data=${encodeURIComponent(query)}`,
@@ -402,7 +402,7 @@ async function getOsmRestaurantById(osmId) {
     const osmRes = await fetch(`https://api.openstreetmap.org/api/0.6/${type}/${id}.json`, {
       headers: {
         'Accept': 'application/json',
-        'User-Agent': 'TablePulse-AI/1.0 (OpenStreetMap Integration; contact: admin@tablepulse.app)',
+        'User-Agent': 'Smart-Table-AI/1.0 (OpenStreetMap Integration; contact: admin@smarttable.ai)',
       },
       signal: AbortSignal.timeout(6000),
     });

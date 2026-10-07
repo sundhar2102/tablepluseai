@@ -1,4 +1,4 @@
-name: TablePulse Appium Mobile E2E Tests
+name: Smart Table AI Appium Mobile E2E Tests
 
 on:
   push:

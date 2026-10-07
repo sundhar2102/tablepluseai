@@ -218,7 +218,7 @@ export default function OwnerOrdersPage() {
           </h3>
           <p className="text-xs text-text-muted">
             {orders.length === 0
-              ? 'When a customer places a dine-in order through TablePulse AI, it will appear here in real time.'
+              ? 'When a customer places a dine-in order through Smart Table AI, it will appear here in real time.'
               : 'New customer orders will appear here automatically via real-time WebSocket.'}
           </p>
         </div>

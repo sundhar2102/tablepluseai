@@ -1,6 +1,6 @@
 /**
- * TablePulse AI - Regression Test Runner
- * Executes core regression suites: Data Integrity, Dietary Intent, Multi-Restaurant Menus, and Stage Verifications
+ * Smart Table AI - Regression Test Runner
+ * Executes core regression suites: Branding & Logo Regression, Data Integrity, Dietary Intent, and Multi-Restaurant Menus
  */
 const { spawnSync } = require('child_process');
 const path = require('path');
@@ -8,13 +8,14 @@ const path = require('path');
 const rootDir = path.resolve(__dirname, '../../');
 
 const regressionSuites = [
+  'tests/regression-tests/test-branding-regression.js',
   'tests/test-production-data-integrity.js',
   'tests/test-dietary-intent-e2e.js',
   'tests/multi-restaurant-menu-ai-test.js'
 ];
 
 console.log('============================================================');
-console.log('🔄 RUNNING TABLEPULSE AI — REGRESSION TEST SUITE');
+console.log('🔄 RUNNING SMART TABLE AI — REGRESSION TEST SUITE');
 console.log('============================================================\n');
 
 let allPassed = true;

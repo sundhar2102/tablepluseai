@@ -1,6 +1,6 @@
 /**
- * TablePulse AI - Master Test Analysis & Excel Report Generator
- * Generates: reports/TablePulse_AI_Test_Analysis.xlsx
+ * Smart Table AI - Master Test Analysis & Excel Report Generator
+ * Generates: reports/Smart_Table_AI_Test_Analysis.xlsx
  * Contains 15 Sheets with 320+ Unique Test Cases and Real Performance Numbers
  */
 const XLSX = require('xlsx');
@@ -340,8 +340,10 @@ function generateExcelReport(options = {}) {
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(readinessData), 'Deployment Readiness');
 
   // Save Workbook
-  const filePath = path.join(reportsDir, 'TablePulse_AI_Test_Analysis.xlsx');
+  const filePath = path.join(reportsDir, 'Smart_Table_AI_Test_Analysis.xlsx');
   XLSX.writeFile(wb, filePath);
+  // Also preserve legacy filename for backwards compatibility
+  XLSX.writeFile(wb, path.join(reportsDir, 'TablePulse_AI_Test_Analysis.xlsx'));
 
   console.log(`\n============================================================`);
   console.log(`📊 MASTER TEST ANALYSIS EXCEL GENERATED:`);

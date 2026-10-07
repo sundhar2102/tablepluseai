@@ -146,10 +146,10 @@ export default function RestaurantDetailPage() {
     }
   }, [location.search, restaurant]);
 
-  // Real-time Socket.IO availability subscription (ONLY for verified TablePulse restaurants)
+  // Real-time Socket.IO availability subscription (ONLY for verified Smart Table AI restaurants)
   useEffect(() => {
     if (!socket || !restaurant?.id) return;
-    if (restaurant.tablepulse_registered === false) return;
+    if ((restaurant.smart_table_registered ?? restaurant.tablepulse_registered) === false) return;
 
     socket.emit('join:restaurant', restaurant.id);
     socket.emit('joinRestaurant', restaurant.id);
@@ -224,7 +224,7 @@ export default function RestaurantDetailPage() {
       socket.off('menu:updated', handleMenuUpdate);
       socket.off('item:availability_changed', handleItemAvailability);
     };
-  }, [socket, restaurant?.id, restaurant?.tablepulse_registered, fetchDetails]);
+  }, [socket, restaurant?.id, restaurant?.smart_table_registered, restaurant?.tablepulse_registered, fetchDetails]);
 
   // Compute exact distance from device location if real coordinates available (never fake)
   const computedDistance = useMemo(() => {
@@ -255,23 +255,24 @@ export default function RestaurantDetailPage() {
     return found ? found.quantity : 0;
   };
 
-  const isTablePulseRegistered =
-    restaurant?.tablepulse_registered === true && restaurant?.operational_data_available === true;
+  const isSmartTableRegistered =
+    ((restaurant?.smart_table_registered ?? restaurant?.tablepulse_registered) === true) &&
+    restaurant?.operational_data_available === true;
 
   // ── Button Action Handlers ──────────────────────────────────────────
   const handleViewMenu = () => {
     const el = document.getElementById('restaurant-menu-section');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
-    } else if (isTablePulseRegistered) {
+    } else if (isSmartTableRegistered) {
       setMenuModalOpen(true);
     } else {
-      toast('Digital menu is not published on TablePulse yet.', { icon: '📖' });
+      toast('Digital menu is not published on Smart Table AI yet.', { icon: '📖' });
     }
   };
 
   const handlePreOrderClick = () => {
-    if (isTablePulseRegistered) {
+    if (isSmartTableRegistered) {
       if (cart.items.length > 0 && cart.restaurant?.id === restaurant?.id) {
         setPreOrderDrawerOpen(true);
       } else {
@@ -289,13 +290,13 @@ export default function RestaurantDetailPage() {
         title: 'Online Pre-Ordering Unavailable',
         feature: 'Kitchen Pre-Ordering',
         description:
-          'In-app food pre-ordering and kitchen ticketing require TablePulse partner integration. Because this restaurant was discovered via OpenStreetMap and has not yet onboarded with TablePulse, online ordering is not currently enabled.',
+          'In-app food pre-ordering and kitchen ticketing require Smart Table AI partner integration. Because this restaurant was discovered via OpenStreetMap and has not yet onboarded with Smart Table AI, online ordering is not currently enabled.',
       });
     }
   };
 
   const handleReserveClick = () => {
-    if (isTablePulseRegistered) {
+    if (isSmartTableRegistered) {
       setReserveModalOpen(true);
     } else {
       setFeatureModal({
@@ -303,13 +304,13 @@ export default function RestaurantDetailPage() {
         title: 'Table Reservation Unavailable',
         feature: 'Guaranteed Reservations',
         description:
-          'Live table reservations require verified seating floor plans in the TablePulse system. Once this dining establishment joins TablePulse, you will be able to book guaranteed tables in advance.',
+          'Live table reservations require verified seating floor plans in the Smart Table AI system. Once this dining establishment joins Smart Table AI, you will be able to book guaranteed tables in advance.',
       });
     }
   };
 
   const handleQueueClick = () => {
-    if (isTablePulseRegistered) {
+    if (isSmartTableRegistered) {
       setQueueModalOpen(true);
     } else {
       setFeatureModal({
@@ -317,14 +318,14 @@ export default function RestaurantDetailPage() {
         title: 'Live Waitlist Unavailable',
         feature: 'Contactless Walk-In Queue',
         description:
-          'Real-time queue tracking and contactless waitlists require active host stand connectivity. Once this restaurant joins TablePulse, you will be able to join the queue remotely.',
+          'Real-time queue tracking and contactless waitlists require active host stand connectivity. Once this restaurant joins Smart Table AI, you will be able to join the queue remotely.',
       });
     }
   };
 
   const handleRequestRestaurant = () => {
     setHasRequested(true);
-    toast.success('Thank you! We have registered your request to bring this restaurant onto TablePulse.', {
+    toast.success('Thank you! We have registered your request to bring this restaurant onto Smart Table AI.', {
       duration: 4000,
       icon: '🎉',
     });
@@ -343,8 +344,8 @@ export default function RestaurantDetailPage() {
     const url = window.location.href;
     if (navigator.share) {
       navigator.share({
-        title: restaurant?.name || 'TablePulse Restaurant',
-        text: `Check out ${restaurant?.name} on TablePulse AI!`,
+        title: restaurant?.name || 'Smart Table Restaurant',
+        text: `Check out ${restaurant?.name} on Smart Table AI!`,
         url,
       }).catch(() => {});
     } else {
@@ -444,7 +445,7 @@ export default function RestaurantDetailPage() {
     }
   };
 
-  // Staff simulation tool (TablePulse operational verification)
+  // Staff simulation tool (Smart Table operational verification)
   const handleSimulateStatus = async (tableId, newStatus) => {
     setSimulating(true);
     const { error: err } = await restaurantService.updateTableStatus(restaurant.id, tableId, newStatus);
@@ -576,7 +577,7 @@ export default function RestaurantDetailPage() {
             <div className="flex items-center gap-2 flex-wrap">
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-brand text-surface-bg backdrop-blur-md shadow-md">
                 <Sparkles size={12} />
-                TablePulse Verified Restaurant
+                Smart Table Verified Restaurant
               </span>
 
               {/* Distance from device location (never fake) */}
@@ -733,10 +734,10 @@ export default function RestaurantDetailPage() {
         </div>
       </div>
 
-      {/* ── 3. Operational Section: Registered TablePulse vs Discovery-Only State ── */}
-      {isTablePulseRegistered ? (
+      {/* ── 3. Operational Section: Registered Smart Table AI vs Discovery-Only State ── */}
+      {isSmartTableRegistered ? (
         /* ═══════════════════════════════════════════════════════════════
-           TABLEPULSE REGISTERED RESTAURANT: FULL OPERATIONAL EXPERIENCE
+           SMART TABLE REGISTERED RESTAURANT: FULL OPERATIONAL EXPERIENCE
            ═══════════════════════════════════════════════════════════════ */
         <>
           {/* Live Operational Metrics Card */}
@@ -1163,10 +1164,10 @@ export default function RestaurantDetailPage() {
                 <span>Discovered Restaurant</span>
               </div>
               <h2 className="text-xl md:text-2xl font-extrabold text-text-primary tracking-tight">
-                Real-World Restaurant on TablePulse
+                Real-World Restaurant on Smart Table AI
               </h2>
               <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-2xl">
-                This restaurant is discoverable on TablePulse through OpenStreetMap. Verified live operational capabilities (live table tracking, contactless queue, pre-ordering, and reservations) will activate when this restaurant joins the TablePulse partner network.
+                This restaurant is discoverable on Smart Table AI through OpenStreetMap. Verified live operational capabilities (live table tracking, contactless queue, pre-ordering, and reservations) will activate when this restaurant joins the Smart Table AI partner network.
               </p>
             </div>
 
@@ -1204,12 +1205,12 @@ export default function RestaurantDetailPage() {
                 </ul>
               </div>
 
-              {/* Column 2: Coming with TablePulse Registration */}
+              {/* Column 2: Coming with Smart Table Registration */}
               <div className="p-4 rounded-xl bg-surface-elevated/60 border border-brand/20 space-y-3">
                 <div className="flex items-center gap-2 pb-2 border-b border-surface-border/60">
                   <Sparkles size={14} className="text-brand shrink-0" />
                   <h3 className="font-bold text-xs uppercase tracking-wider text-brand">
-                    Coming with TablePulse Registration
+                    Coming with Smart Table Registration
                   </h3>
                 </div>
                 <ul className="space-y-2 text-xs text-text-muted">
@@ -1284,7 +1285,7 @@ export default function RestaurantDetailPage() {
                 }`}
               >
                 <Sparkles size={14} />
-                <span>{hasRequested ? 'Requested! We Noted Your Interest' : 'Request this Restaurant on TablePulse'}</span>
+                <span>{hasRequested ? 'Requested! We Noted Your Interest' : 'Request this Restaurant on Smart Table AI'}</span>
               </button>
             </div>
           </div>
@@ -1361,7 +1362,7 @@ export default function RestaurantDetailPage() {
                 Digital Menu Not Yet Published
               </h3>
               <p className="text-xs text-text-muted mt-1 max-w-md mx-auto leading-relaxed">
-                This restaurant was discovered via OpenStreetMap and has not yet onboarded its digital menu to TablePulse. Once registered, full menus, prices, and online ordering become available.
+                This restaurant was discovered via OpenStreetMap and has not yet onboarded its digital menu to Smart Table AI. Once registered, full menus, prices, and online ordering become available.
               </p>
             </div>
             <div className="pt-2">
@@ -1379,14 +1380,14 @@ export default function RestaurantDetailPage() {
         </div>
       )}
 
-      {/* ── TablePulse Operational Verified Platform Footer ─────────── */}
+      {/* ── Smart Table AI Operational Verified Platform Footer ─────────── */}
       <div className="card p-4 border border-surface-border/50 bg-surface-card/60 text-xs text-text-muted space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} className="text-brand" />
             <span>
               Verified Restaurant Status:{' '}
-              <strong className="text-text-primary">TablePulse AI Registered Partner</strong>
+              <strong className="text-text-primary">Smart Table AI Registered Partner</strong>
             </span>
           </div>
 
@@ -1425,7 +1426,7 @@ export default function RestaurantDetailPage() {
                   {restaurant.name}
                 </span>
                 <span className="text-[11px] text-text-muted">
-                  Discovered through OpenStreetMap • Not yet a TablePulse Partner
+                  Discovered through OpenStreetMap • Not yet a Smart Table Partner
                 </span>
               </div>
 
@@ -1434,7 +1435,7 @@ export default function RestaurantDetailPage() {
               <div className="p-3 rounded-xl bg-brand/5 border border-brand/20 text-brand text-[11px] flex items-start gap-2">
                 <Sparkles size={14} className="shrink-0 mt-0.5" />
                 <span>
-                  Would you like to dine here with TablePulse? You can request this restaurant to help us onboard them faster!
+                  Would you like to dine here with Smart Table AI? You can request this restaurant to help us onboard them faster!
                 </span>
               </div>
             </div>
@@ -1647,7 +1648,7 @@ export default function RestaurantDetailPage() {
         </div>
       )}
 
-      {/* ── Reserve Table Modal (TablePulse Registered) ───────────────── */}
+      {/* ── Reserve Table Modal (Smart Table Registered) ───────────────── */}
       {reserveModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 animate-fade-in">
           <div className="card max-w-md w-full space-y-4 border border-surface-border shadow-2xl">
@@ -1737,7 +1738,7 @@ export default function RestaurantDetailPage() {
         </div>
       )}
 
-      {/* ── Join Walk-In Queue Modal (TablePulse Registered) ──────────── */}
+      {/* ── Join Walk-In Queue Modal (Smart Table Registered) ──────────── */}
       {queueModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 animate-fade-in">
           <div className="card max-w-md w-full space-y-4 border border-surface-border shadow-2xl">

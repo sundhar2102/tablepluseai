@@ -1,4 +1,4 @@
-name: TablePulse Full Automated Test Suite
+name: Smart Table AI Full Automated Test Suite
 
 on:
   push:

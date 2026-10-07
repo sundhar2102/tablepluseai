@@ -1,4 +1,4 @@
-name: TablePulse Unit Tests
+name: Smart Table AI Unit Tests
 
 on:
   push:

@@ -23,7 +23,9 @@ export const authService = {
     try {
       const res = await api.post('/auth/login', payload);
       const { token, user } = res.data.data;
-      // Store auth in localStorage (approved TD-005)
+      // Store auth in localStorage
+      localStorage.setItem('smarttable_token', token);
+      localStorage.setItem('smarttable_user',  JSON.stringify(user));
       localStorage.setItem('tp_token', token);
       localStorage.setItem('tp_user',  JSON.stringify(user));
       return { data: { token, user }, error: null };
@@ -39,6 +41,9 @@ export const authService = {
     try {
       await api.post('/auth/logout');
     } finally {
+      localStorage.removeItem('smarttable_token');
+      localStorage.removeItem('smarttable_user');
+      localStorage.removeItem('smarttable_cart');
       localStorage.removeItem('tp_token');
       localStorage.removeItem('tp_user');
       localStorage.removeItem('tp_cart');
@@ -75,7 +80,7 @@ export const authService = {
   // Utility: get stored user from localStorage (synchronous)
   getStoredUser() {
     try {
-      const raw = localStorage.getItem('tp_user');
+      const raw = localStorage.getItem('smarttable_user') || localStorage.getItem('tp_user');
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
@@ -84,6 +89,6 @@ export const authService = {
 
   // Utility: check if token exists
   isAuthenticated() {
-    return !!localStorage.getItem('tp_token');
+    return !!(localStorage.getItem('smarttable_token') || localStorage.getItem('tp_token'));
   },
 };

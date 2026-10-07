@@ -4,6 +4,7 @@ import { Home, Search, CalendarDays, ShoppingBag, User, LogOut } from 'lucide-re
 import { useAuth } from '../context/AuthContext';
 import NotificationModal from '../components/common/NotificationModal';
 import AiAssistantDrawer from '../components/common/AiAssistantDrawer';
+import SmartTableLogo from '../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 const NAV_ITEMS = [
@@ -35,10 +36,7 @@ export default function CustomerLayout({ children }) {
       <header className="sticky top-0 z-40 h-header bg-surface-card border-b border-surface-border
                          flex items-center px-4 gap-3">
         <Link to="/app" className="flex items-center gap-2 flex-1 group">
-          <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center transition-transform group-hover:scale-105">
-            <span className="text-surface-bg font-bold text-sm">TP</span>
-          </div>
-          <span className="font-bold text-lg text-text-primary group-hover:text-brand transition-colors">TablePulse</span>
+          <SmartTableLogo variant="full" size="sm" />
         </Link>
         <NotificationBell onOpen={() => setNotifOpen(true)} />
         <button
@@ -60,7 +58,7 @@ export default function CustomerLayout({ children }) {
         {children}
       </main>
 
-      {/* TablePulse AI Concierge & Dining Assistant */}
+      {/* Smart Table AI Concierge & Dining Assistant */}
       <AiAssistantDrawer />
 
       {/* Bottom navigation */}

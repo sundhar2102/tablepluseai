@@ -130,13 +130,13 @@ export default function CustomerHomePage() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-xs font-bold text-brand mb-2">
             <Radio size={13} className={`text-brand ${socketConnected ? 'animate-pulse' : ''}`} />
-            <span>TablePulse Live Operations</span>
+            <span>Smart Table Live Operations</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-text-primary tracking-tight">
             Discover <span className="text-brand">Registered Restaurants</span>
           </h1>
           <p className="text-text-secondary text-sm mt-1">
-            Real-time table availability, live crowd rush levels, contactless queuing, and digital pre-ordering across all TablePulse dining spots.
+            Real-time table availability, live crowd rush levels, contactless queuing, and digital pre-ordering across all Smart Table AI dining spots.
           </p>
         </div>
 
@@ -251,7 +251,7 @@ export default function CustomerHomePage() {
                 className="card h-80 animate-pulse border border-surface-border flex flex-col justify-center items-center gap-3 bg-surface-card"
               >
                 <RefreshCw size={24} className="animate-spin text-brand" />
-                <span className="text-xs text-text-muted">Loading TablePulse restaurants...</span>
+                <span className="text-xs text-text-muted">Loading restaurants...</span>
               </div>
             ))}
           </div>
@@ -288,7 +288,7 @@ export default function CustomerHomePage() {
               <p className="text-xs text-text-muted mt-1">
                 {searchQuery || selectedCuisine !== 'ALL' || crowdFilter !== 'ALL'
                   ? 'No registered restaurants match your current filters. Try resetting search filters.'
-                  : 'There are currently no registered restaurants active in the TablePulse system.'}
+                  : 'There are currently no registered restaurants active in the Smart Table AI system.'}
               </p>
             </div>
             {(searchQuery || selectedCuisine !== 'ALL' || crowdFilter !== 'ALL') && (

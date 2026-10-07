@@ -17,7 +17,7 @@ const INITIAL_USERS = [
   {
     id: 1,
     name: 'Verification Customer',
-    email: 'testuser_stage5@tablepulse.app',
+    email: 'testuser_stage5@smarttable.ai',
     phone: '+91 98400 11223',
     role: 'customer',
     bookingsCount: 4,

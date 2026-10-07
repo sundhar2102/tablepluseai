@@ -1,4 +1,4 @@
-name: TablePulse Selenium Web E2E Tests
+name: Smart Table AI Selenium Web E2E Tests
 
 on:
   push:

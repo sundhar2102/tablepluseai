@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle2, Loader2, KeyRound } from 'lucide-react';
+import SmartTableLogo from '../../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 export default function ForgotPasswordPage() {
@@ -34,13 +35,11 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col items-center justify-center px-4 py-8">
       {/* Brand Header */}
-      <div className="mb-6 text-center animate-fade-in">
-        <div className="w-14 h-14 rounded-2xl bg-brand mx-auto mb-3 flex items-center justify-center shadow-glow">
-          <span className="text-surface-bg font-bold text-xl">TP</span>
-        </div>
-        <h1 className="text-xl font-bold text-text-primary">Reset Password</h1>
-        <p className="text-text-secondary text-xs mt-1">
-          Recover your TablePulse AI account access
+      <div className="mb-6 text-center animate-fade-in flex flex-col items-center">
+        <SmartTableLogo variant="full" size="md" />
+        <h1 className="text-xl font-bold text-text-primary mt-2">Reset Password</h1>
+        <p className="text-text-secondary text-xs mt-0.5">
+          Recover your Smart Table AI account access
         </p>
       </div>
 

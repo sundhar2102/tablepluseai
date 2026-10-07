@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import SmartTableLogo from '../../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 /**
@@ -70,12 +71,10 @@ export default function CustomerRegisterPage() {
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col items-center justify-center px-4 py-8">
       {/* Logo */}
-      <div className="mb-6 text-center animate-fade-in">
-        <div className="w-14 h-14 rounded-2xl bg-brand mx-auto mb-3 flex items-center justify-center shadow-glow">
-          <span className="text-surface-bg font-bold text-xl">TP</span>
-        </div>
-        <h1 className="text-xl font-bold text-text-primary">Create Account</h1>
-        <p className="text-text-secondary text-sm mt-1">Join TablePulse AI today</p>
+      <div className="mb-6 text-center animate-fade-in flex flex-col items-center">
+        <SmartTableLogo variant="full" size="md" />
+        <h1 className="text-xl font-bold text-text-primary mt-2">Create Account</h1>
+        <p className="text-text-secondary text-sm mt-0.5">Join Smart Table AI today</p>
       </div>
 
       {/* Card */}
@@ -179,7 +178,7 @@ export default function CustomerRegisterPage() {
                 className="mt-0.5 rounded border-surface-border text-brand focus:ring-brand accent-brand"
               />
               <span>
-                I agree to TablePulse AI's terms of service and dining policies.
+                I agree to Smart Table AI's terms of service and dining policies.
               </span>
             </label>
             {errors.terms && <p className="input-error text-[11px]">{errors.terms}</p>}

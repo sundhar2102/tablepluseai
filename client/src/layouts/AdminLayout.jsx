@@ -5,6 +5,7 @@ import {
   Users, UserCog, BarChart3, Settings, LogOut, Shield, Menu, X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import SmartTableLogo from '../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 const NAV_ITEMS = [
@@ -37,12 +38,8 @@ export default function AdminLayout({ children }) {
       <aside className="hidden md:flex flex-col w-sidebar bg-surface-card
                         border-r border-surface-border fixed top-0 left-0 bottom-0 z-30">
         {/* Logo */}
-        <Link to="/admin" className="h-header flex items-center gap-3 px-5 border-b border-surface-border">
-          <Shield size={20} className="text-accent flex-shrink-0" />
-          <div>
-            <p className="font-bold text-text-primary text-sm leading-none">TablePulse</p>
-            <p className="text-accent text-[10px] mt-0.5 font-semibold">SUPER ADMIN</p>
-          </div>
+        <Link to="/admin" className="h-header flex items-center px-4 border-b border-surface-border">
+          <SmartTableLogo variant="full" size="sm" subtitle="SUPER ADMIN" />
         </Link>
 
         {/* Navigation */}
@@ -95,8 +92,7 @@ export default function AdminLayout({ children }) {
                            flex items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2 md:hidden">
             <Link to="/admin" className="flex items-center gap-2">
-              <Shield size={20} className="text-accent flex-shrink-0" />
-              <span className="font-bold text-text-primary text-sm">TablePulse Admin</span>
+              <SmartTableLogo variant="full" size="sm" subtitle="Admin" />
             </Link>
           </div>
           <div className="hidden md:block flex-1 font-semibold text-text-secondary text-sm">Admin Panel</div>

@@ -1,9 +1,9 @@
 {
-  "name": "tablepulse-client",
+  "name": "smart-table-client",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "TablePulse AI — Customer, Owner & Admin Frontend",
+  "description": "Smart Table AI — Customer, Owner & Admin Frontend",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

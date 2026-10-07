@@ -319,7 +319,7 @@ export default function CustomerProfilePage() {
           className="btn-danger w-full py-2.5 text-xs font-semibold flex items-center justify-center gap-2"
         >
           <LogOut size={16} />
-          <span>Log Out of TablePulse</span>
+          <span>Log Out of Smart Table AI</span>
         </button>
       </div>
     </div>

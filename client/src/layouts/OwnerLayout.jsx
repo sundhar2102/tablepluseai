@@ -6,6 +6,7 @@ import {
   Settings, LogOut, ChevronRight, Menu, X, UserCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import SmartTableLogo from '../components/common/SmartTableLogo';
 import toast from 'react-hot-toast';
 
 const NAV_ITEMS = [
@@ -41,14 +42,8 @@ export default function OwnerLayout({ children }) {
       <aside className="hidden md:flex flex-col w-sidebar bg-surface-card
                         border-r border-surface-border fixed top-0 left-0 bottom-0 z-30">
         {/* Logo */}
-        <div className="h-header flex items-center gap-3 px-5 border-b border-surface-border">
-          <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center flex-shrink-0">
-            <span className="text-surface-bg font-bold text-sm">TP</span>
-          </div>
-          <div className="min-w-0">
-            <p className="font-bold text-text-primary text-sm leading-none">TablePulse</p>
-            <p className="text-text-disabled text-[10px] mt-0.5">Owner Portal</p>
-          </div>
+        <div className="h-header flex items-center px-4 border-b border-surface-border">
+          <SmartTableLogo variant="full" size="sm" subtitle="Owner Portal" />
         </div>
 
         {/* Navigation */}
@@ -110,10 +105,7 @@ export default function OwnerLayout({ children }) {
           {/* Mobile: logo + hamburger */}
           <div className="flex items-center justify-between w-full md:hidden">
             <Link to="/owner" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center">
-                <span className="text-surface-bg font-bold text-xs">TP</span>
-              </div>
-              <span className="font-bold text-text-primary text-sm">Owner Portal</span>
+              <SmartTableLogo variant="full" size="sm" subtitle="Owner" />
             </Link>
             <button
               onClick={() => setMobileOpen(v => !v)}

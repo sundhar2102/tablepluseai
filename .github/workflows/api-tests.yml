@@ -1,4 +1,4 @@
-name: TablePulse REST API Tests
+name: Smart Table AI REST API Tests
 
 on:
   push:

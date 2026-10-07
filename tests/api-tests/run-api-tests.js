@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Master REST API Test Suite
+ * Smart Table AI - Master REST API Test Suite
  * Tests: Auth, Restaurants, Menu, Tables, Orders, Reservations, Admin, Validation & Security
  */
 const http = require('http');
@@ -42,7 +42,7 @@ function request(path, options = {}) {
 
 async function runApiTestSuite() {
   console.log('============================================================');
-  console.log('📡 RUNNING TABLEPULSE AI — MASTER REST API TEST SUITE');
+  console.log('📡 RUNNING SMART TABLE AI — MASTER REST API TEST SUITE');
   console.log('============================================================\n');
 
   const testResults = [];

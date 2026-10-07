@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     extend: {
-      // ── TablePulse AI Design System ─────────────────────────
+      // ── Smart Table AI Design System ─────────────────────────
       // Based on approved Stage 3 UI/UX specification
 
       colors: {

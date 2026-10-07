@@ -25,7 +25,7 @@ function generateMobileReport(catalog, deviceInfo) {
   // Sheet 1: Summary
   const summaryData = [
     ['METRIC', 'VALUE'],
-    ['Project Name', 'TablePulse AI'],
+    ['Project Name', 'Smart Table AI'],
     ['Test Framework', 'Appium Mobile Automation (UiAutomator2 / Android)'],
     ['Target Platform', 'Android (Capacitor Native Shell)'],
     ['Execution Date', new Date().toISOString().replace('T', ' ').substring(0, 19)],

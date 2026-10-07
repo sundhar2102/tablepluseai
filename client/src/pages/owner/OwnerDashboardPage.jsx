@@ -494,7 +494,7 @@ export default function OwnerDashboardPage() {
           <div className="text-center py-10 text-text-muted text-xs space-y-1">
             <CalendarDays size={24} className="mx-auto text-text-disabled" />
             <p className="font-semibold text-text-primary text-sm">No reservations yet</p>
-            <p className="text-text-muted text-xs">Customer reservations made through TablePulse AI will appear here.</p>
+            <p className="text-text-muted text-xs">Customer reservations made through Smart Table AI will appear here.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

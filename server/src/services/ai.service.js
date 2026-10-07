@@ -225,7 +225,7 @@ async function callGroundedOpenAI({ messages, restaurant, menuItems, userName, d
         reply: `ℹ️ There are no matching non-vegetarian items currently available at **${restaurant.name}**.\n\n${restaurant.name} specializes in authentic vegetarian delicacies.`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: [],
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
   } else if (dietaryPreference === 'VEG') {
@@ -235,7 +235,7 @@ async function callGroundedOpenAI({ messages, restaurant, menuItems, userName, d
         reply: `ℹ️ There are no matching vegetarian items currently available at **${restaurant.name}**.`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: [],
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
   }
@@ -251,7 +251,7 @@ async function callGroundedOpenAI({ messages, restaurant, menuItems, userName, d
     dietaryRule = '4. CRITICAL: The customer requested VEGETARIAN food. Recommend ONLY vegetarian dishes (is_vegetarian = 1). NEVER recommend meat, chicken, mutton, fish, or egg dishes.';
   }
 
-  const systemPrompt = `You are TablePulse AI, dining assistant for "${restaurant.name}" (Cuisine: ${restaurant.cuisine_type}).
+  const systemPrompt = `You are Smart Table AI, dining assistant for "${restaurant.name}" (Cuisine: ${restaurant.cuisine_type}).
 Address: ${restaurant.address}
 Live Tables: ${restaurant.available_tables}/${restaurant.total_tables} available.
 
@@ -358,7 +358,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
         reply: `ℹ️ There are no matching non-vegetarian items currently available at **${restaurant.name}**.\n\n${restaurant.name} specializes in authentic vegetarian delicacies. Would you like to explore our vegetarian specialties instead?`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: [],
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
     availableItems = nonVegAvailable;
@@ -369,7 +369,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
         reply: `ℹ️ There are no matching vegetarian items currently available at **${restaurant.name}**.\n\nWould you like to check our other dining options?`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: [],
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
     availableItems = vegAvailable;
@@ -405,7 +405,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: [formatItem(matchedItem)],
         action: { type: 'add_to_cart', item: formatItem(matchedItem) },
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
   }
@@ -424,7 +424,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `📍 **Live Seating Status at ${restaurant.name}:**\n\n${statusText}\n\nOur kitchen is actively taking orders with an average dining turnaround of 35-45 minutes.`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: quickBites,
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -437,7 +437,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🍗 Here are our signature **non-vegetarian specialties** at **${restaurant.name}**:\n\n${formatBulletList(selected)}\n\nFreshly prepared by our culinary team. Would you like me to add any of these to your cart?`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: selected.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -450,7 +450,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🌱 Based on your preference for **vegetarian food** at **${restaurant.name}**, here are our top recommendations:\n\n${formatBulletList(selected)}\n\nWould you like me to add any of these to your cart?`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: selected.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -468,7 +468,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
         reply: `💰 Here are fantastic options at **${restaurant.name}** that comfortably fit your budget of **under ₹${maxBudget}**:\n\n${formatBulletList(selected)}\n\nAll prices are inclusive of taxes. Would you like to select one?`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: selected.map(formatItem),
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     } else {
       // Budget is lower than lowest priced item
@@ -477,7 +477,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
         reply: `We don't have items strictly under ₹${maxBudget} at **${restaurant.name}**, but here are our most pocket-friendly offerings:\n\n${formatBulletList(lowestPriced)}`,
         restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
         recommendedItems: lowestPriced.map(formatItem),
-        source: 'tablepulse-grounded-intelligence'
+        source: 'smart-table-grounded-intelligence'
       };
     }
   }
@@ -497,7 +497,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🥂 Here is a curated dining combination **perfect for two guests** at **${restaurant.name}**:\n\n${formatBulletList(combo)}\n\n**Estimated Total:** ₹${comboPrice.toFixed(2)} (Ideal sharing portions).`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: combo.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -545,7 +545,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
           reply: `✨ Here are the delicious **${label}** selections available at **${restaurant.name}**:\n\n${formatBulletList(selected)}\n\nAll made fresh to order. Would you like to add any to your cart?`,
           restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
           recommendedItems: selected.map(formatItem),
-          source: 'tablepulse-grounded-intelligence'
+          source: 'smart-table-grounded-intelligence'
         };
       } else {
         // Critical Rule 9: Never hallucinate! Explicitly state item is absent & provide real alternatives!
@@ -554,7 +554,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
           reply: `ℹ️ **${label} is not available at ${restaurant.name}** (${restaurant.name} specializes in ${restaurant.cuisine_type}).\n\nBased on our current menu, here are popular specialties you will love instead:\n\n${formatBulletList(alternatives)}\n\nWould you like to try one of these?`,
           restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
           recommendedItems: alternatives.map(formatItem),
-          source: 'tablepulse-grounded-intelligence'
+          source: 'smart-table-grounded-intelligence'
         };
       }
     }
@@ -571,7 +571,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🌶️ For bold and **spicy flavors** at **${restaurant.name}**, we recommend:\n\n${formatBulletList(selected)}\n\nYou can also request the kitchen to adjust the spice level to your liking!`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: selected.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -585,7 +585,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🧈 Here are our comforting, **mild and creamy** dishes at **${restaurant.name}**:\n\n${formatBulletList(selected)}\n\nGentle on the palate and rich in flavour!`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: selected.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -600,7 +600,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `🍨 Here are delightful **beverages and sweet treats** at **${restaurant.name}**:\n\n${formatBulletList(selected)}\n\nThe perfect finish to your dining experience!`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: selected.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -611,7 +611,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
       reply: `⚡ In a hurry? Here are our **quickest dishes to prepare** at **${restaurant.name}** (approx. 5-12 mins):\n\n${formatBulletList(fastItems)}\n\nOrder ahead so they arrive piping hot at your table!`,
       restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
       recommendedItems: fastItems.map(formatItem),
-      source: 'tablepulse-grounded-intelligence'
+      source: 'smart-table-grounded-intelligence'
     };
   }
 
@@ -621,7 +621,7 @@ function generateRestaurantGroundedResponse({ userMsg, restaurant, menuItems, us
     reply: `👋 Welcome to **${restaurant.name}** (${restaurant.cuisine_type})!\n\nHere are our top chef recommendations from today's live menu:\n\n${formatBulletList(curated)}\n\nTell me if you have any dietary preferences (e.g. Pure Veg, Spicy, Budget under ₹300) and I'll tailor the menu for you!`,
     restaurant: { id: restaurant.id, name: restaurant.name, cuisine: restaurant.cuisine_type },
     recommendedItems: curated.map(formatItem),
-    source: 'tablepulse-grounded-intelligence'
+    source: 'smart-table-grounded-intelligence'
   };
 }
 
@@ -662,10 +662,10 @@ function generateGeneralDiscoveryResponse({ userMsg, restaurants, userName }) {
   ).join('\n');
 
   return {
-    reply: `👋 Hello${userName ? ` ${userName}` : ''}! Based on live table availability across TablePulse, here are our recommended dining spots:\n\n${restList}\n\nClick on any restaurant to explore its live floor layout and digital menu!`,
+    reply: `👋 Hello${userName ? ` ${userName}` : ''}! Based on live table availability across Smart Table AI, here are our recommended dining spots:\n\n${restList}\n\nClick on any restaurant to explore its live floor layout and digital menu!`,
     suggestedRestaurants: suggestions,
     recommendedItems: [],
-    source: 'tablepulse-grounded-intelligence'
+    source: 'smart-table-grounded-intelligence'
   };
 }
 

@@ -209,7 +209,7 @@ export default function OwnerReservationsPage() {
           </h3>
           <p className="text-xs text-text-muted">
             {statusFilter === 'ALL' && !dateFilter
-              ? 'When customers book a table through TablePulse AI, their reservations will appear here in real time.'
+              ? 'When customers book a table through Smart Table AI, their reservations will appear here in real time.'
               : 'Try clearing your status or date filters to view all bookings.'}
           </p>
         </div>

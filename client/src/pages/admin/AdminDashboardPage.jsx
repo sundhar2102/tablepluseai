@@ -33,7 +33,7 @@ export default function AdminDashboardPage() {
     <div className="animate-fade-in space-y-6">
       <PageHeader
         title="Super Admin Dashboard"
-        subtitle="TablePulse AI platform oversight, merchant partner approvals, user management, and system telemetry."
+        subtitle="Smart Table AI platform oversight, merchant partner approvals, user management, and system telemetry."
         badge={
           <span className="badge bg-accent/15 text-accent border border-accent/30 text-[11px] font-bold">
             SUPER ADMIN
@@ -56,10 +56,10 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div className="card p-4 border border-surface-border space-y-1.5 bg-gradient-to-br from-accent/10 to-transparent">
           <div className="flex items-center justify-between text-xs text-text-muted">
-            <span>Main Restaurant</span>
+            <span>Main Platform</span>
             <Store size={16} className="text-accent" />
           </div>
-          <p className="text-lg font-bold text-accent truncate">TablePulse</p>
+          <p className="text-lg font-bold text-accent truncate">Smart Table AI</p>
           <span className="text-[10px] text-emerald-400 font-semibold">100% active operational</span>
         </div>
 
@@ -162,7 +162,7 @@ export default function AdminDashboardPage() {
               <span>Platform Microservices & Services Health</span>
             </h3>
             <p className="text-xs text-text-secondary">
-              Real-time connectivity and status across TablePulse AI infrastructure
+              Real-time connectivity and status across Smart Table AI infrastructure
             </p>
           </div>
           <span className="badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold">

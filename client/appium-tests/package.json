@@ -1,7 +1,7 @@
 {
-  "name": "tablepulse-appium-tests",
+  "name": "smart-table-appium-tests",
   "version": "1.0.0",
-  "description": "Appium Mobile Automation Test Suite for TablePulse AI Android Application",
+  "description": "Appium Mobile Automation Test Suite for Smart Table AI Android Application",
   "main": "index.js",
   "scripts": {
     "test": "node tests/run-mobile-tests.js",

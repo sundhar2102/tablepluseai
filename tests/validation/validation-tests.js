@@ -1,5 +1,5 @@
 /**
- * TablePulse AI - Validation Test Suite (85 Validation Tests)
+ * Smart Table AI - Validation Test Suite (85 Validation Tests)
  * IDs: VAL-001 to VAL-085
  */
 
@@ -460,7 +460,7 @@ runTest('VAL-085', 'Table Status: Primitive string input fails object schema', (
 
 // Output Summary
 console.log('====================================================');
-console.log('     TABLEPULSE AI — VALIDATION TEST RESULTS        ');
+console.log('     SMART TABLE AI — VALIDATION TEST RESULTS       ');
 console.log('====================================================');
 const passed = results.filter(r => r.status === 'PASS').length;
 const failed = results.filter(r => r.status === 'FAIL').length;

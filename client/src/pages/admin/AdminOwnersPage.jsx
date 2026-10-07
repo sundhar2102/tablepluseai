@@ -18,7 +18,7 @@ const INITIAL_OWNERS = [
     name: 'Rahul Sharma',
     email: 'owner@demo.com',
     phone: '+91 98401 99887',
-    restaurantName: 'TablePulse Restaurant',
+    restaurantName: 'The Spice Pavilion',
     restaurantId: 1,
     city: 'Chennai',
     status: 'ACTIVE',

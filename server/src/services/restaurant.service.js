@@ -226,9 +226,10 @@ async function buildOperationalRestaurantResponse(restaurantRow, userLat = null,
     source: 'TABLEPULSE',
     operationalStatus: 'ACTIVE',
     tablepulse_registered: true,
+    smart_table_registered: true,
     operational_data_available: true,
-    discoverySource: 'tablepulse',
-    attribution: 'TablePulse AI',
+    discoverySource: 'smart_table',
+    attribution: 'Smart Table AI',
     sourceUrl: `https://www.openstreetmap.org/search?query=${encodeURIComponent(restaurantRow.address)}`,
     menu: {
       categories: categoryMap,
@@ -289,8 +290,8 @@ async function getRestaurants(query = {}) {
     return {
       count: 0,
       restaurants: [],
-      discoverySource: 'tablepulse',
-      attribution: 'TablePulse AI',
+      discoverySource: 'smart_table',
+      attribution: 'Smart Table AI',
       discoveryServiceStatus: 'active',
     };
   }
@@ -345,8 +346,8 @@ async function getRestaurants(query = {}) {
     count: results.length,
     userLocation: userLat !== null && userLng !== null ? { latitude: userLat, longitude: userLng } : null,
     searchRadiusKm: radius || 10,
-    discoverySource: 'tablepulse',
-    attribution: 'TablePulse AI',
+    discoverySource: 'smart_table',
+    attribution: 'Smart Table AI',
     discoveryServiceStatus: 'active',
     restaurants: results,
   };
