@@ -21,8 +21,8 @@ INSERT INTO `restaurants`
 (`id`, `owner_id`, `name`, `slug`, `description`, `cuisine_type`, `address`, `latitude`, `longitude`, `phone`, `cover_photo_url`, `avg_dining_duration_mins`, `avg_cleaning_duration_mins`, `tax_rate`, `approval_status`, `is_active`)
 VALUES
 (1, 7, 
- 'TablePulse Restaurant', 
- 'tablepulse-restaurant', 
+ 'The Spice Pavilion', 
+ 'the-spice-pavilion', 
  'Welcome to TablePulse Restaurant — featuring fresh artisan dishes, live table occupancy tracking, instant pre-orders, and guaranteed reservations.', 
  'Multi-Cuisine & Contemporary', 
  '42 Usman Road, T. Nagar, Chennai 600017', 
