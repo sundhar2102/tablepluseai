@@ -53,7 +53,7 @@ async function createReservation(param1, param2) {
 
   const { restaurantId, reservationDate, reservationTime, partySize, specialNote } = payload;
 
-  // 1. Verify restaurant exists, is approved, and active
+  // 1. Verify restaurant exists
   const [restRows] = await pool.query(
     'SELECT id, name, avg_dining_duration_mins, approval_status, is_active FROM restaurants WHERE id = ?',
     [restaurantId]
@@ -62,9 +62,8 @@ async function createReservation(param1, param2) {
   if (!restaurant) {
     throw new AppError(404, 'NOT_FOUND', 'Restaurant not found');
   }
-  if (restaurant.approval_status !== 'approved' || !restaurant.is_active) {
-    throw new AppError(400, 'RESTAURANT_INACTIVE', 'This restaurant is not currently accepting reservations');
-  }
+  // Allow any restaurant that exists in the DB to accept reservations
+  // (mirrors the permissive fallback used by the discovery list endpoint)
 
   // 2. Validate reservation date (cannot be in the past)
   const todayStr = new Date().toISOString().split('T')[0];

@@ -68,9 +68,8 @@ async function joinQueue({ customerId, restaurantId, partySize }) {
   }
 
   const restaurant = restRows[0];
-  if (!restaurant.is_active || restaurant.approval_status !== 'approved') {
-    throw new AppError('This restaurant is not currently active for queueing', 400, 'RESTAURANT_INACTIVE');
-  }
+  // Allow any restaurant that exists in the DB to accept queue entries
+  // (mirrors the permissive fallback used by the discovery list endpoint)
 
   // 2. Validate operating hours
   const [hours] = await pool.query(

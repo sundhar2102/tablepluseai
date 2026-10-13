@@ -21,17 +21,37 @@ async function start() {
   setIO(io);
 
   // 4. Start listening
-  const HOST = process.env.HOST || '0.0.0.0';
+  const HOST = '0.0.0.0';
   httpServer.listen(PORT, HOST, () => {
+    const os = require('os');
+    const interfaces = os.networkInterfaces();
+    let lanIp = '127.0.0.1';
+
+    for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name]) {
+        if (iface.family === 'IPv4' && !iface.internal) {
+          // Prefer 192.168.x.x, 10.x.x.x, or 172.x.x.x
+          lanIp = iface.address;
+          if (lanIp.startsWith('192.168.') || lanIp.startsWith('10.')) {
+            break;
+          }
+        }
+      }
+    }
+
     console.log('');
-    console.log('╔══════════════════════════════════════════╗');
-    console.log('║        SMART TABLE AI — SERVER           ║');
-    console.log('╠══════════════════════════════════════════╣');
-    console.log(`║  HTTP   : http://localhost:${PORT}          ║`);
-    console.log(`║  LAN    : http://0.0.0.0:${PORT}            ║`);
-    console.log(`║  Health : http://localhost:${PORT}/api/health ║`);
-    console.log(`║  Env    : ${process.env.NODE_ENV || 'development'}                    ║`);
-    console.log('╚══════════════════════════════════════════╝');
+    console.log('╔══════════════════════════════════════════════════════════╗');
+    console.log('║               SMART TABLE AI — SERVER                    ║');
+    console.log('╠══════════════════════════════════════════════════════════╣');
+    console.log(`║  Status    : ONLINE & LISTENING                          ║`);
+    console.log(`║  Port      : ${PORT}                                        ║`);
+    console.log(`║  Binding   : 0.0.0.0 (All Interfaces)                    ║`);
+    console.log(`║  Local URL : http://localhost:${PORT}                      ║`);
+    console.log(`║  LAN URL   : http://${lanIp}:${PORT}               ║`);
+    console.log(`║  API Base  : http://${lanIp}:${PORT}/api                   ║`);
+    console.log(`║  Health    : http://${lanIp}:${PORT}/api/health            ║`);
+    console.log(`║  Env       : ${process.env.NODE_ENV || 'development'}                             ║`);
+    console.log('╚══════════════════════════════════════════════════════════╝');
     console.log('');
   });
 
@@ -50,3 +70,4 @@ start().catch((err) => {
   console.error('[Server] ❌ Failed to start:', err);
   process.exit(1);
 });
+// Trigger restart

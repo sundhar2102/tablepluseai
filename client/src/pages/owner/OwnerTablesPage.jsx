@@ -20,6 +20,7 @@ import PageHeader from '../../components/common/PageHeader';
 import Modal from '../../components/common/Modal';
 import LoadingState from '../../components/common/LoadingState';
 import toast from 'react-hot-toast';
+import { Plus, Trash2 } from 'lucide-react';
 
 const STATUS_OPTIONS = [
   { value: 'available', label: 'Available', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' },
@@ -36,13 +37,26 @@ export default function OwnerTablesPage() {
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantId, setRestaurantId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('ALL');
   const [selectedTable, setSelectedTable] = useState(null);
   const [updating, setUpdating] = useState(false);
 
+  // Table Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingTable, setEditingTable] = useState(null);
+  const [tableForm, setTableForm] = useState({
+    tableNumber: '',
+    capacity: 4,
+    status: 'available',
+    displayOrder: 0,
+  });
+  const [saving, setSaving] = useState(false);
+
   const fetchTables = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const res = await ownerService.getTables();
       setTables(res.tables || []);
       setSummary(res.summary || {});
@@ -50,7 +64,9 @@ export default function OwnerTablesPage() {
       setRestaurantId(res.restaurantId || null);
     } catch (err) {
       console.error('Failed to load owner tables', err);
-      toast.error(err.response?.data?.error?.message || 'Failed to load restaurant tables');
+      const msg = err.response?.data?.error?.message || 'Failed to load restaurant tables';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -110,6 +126,66 @@ export default function OwnerTablesPage() {
     return t.status === filter;
   });
 
+  const handleOpenAdd = () => {
+    setEditingTable(null);
+    setTableForm({ tableNumber: '', capacity: 4, status: 'available', displayOrder: 0 });
+    setModalOpen(true);
+  };
+
+  const handleOpenEdit = (table) => {
+    setEditingTable(table);
+    setTableForm({
+      tableNumber: table.tableNumber,
+      capacity: table.capacity,
+      status: table.status,
+      displayOrder: table.displayOrder || 0,
+    });
+    setModalOpen(true);
+  };
+
+  const handleDeleteTable = async (table) => {
+    if (!window.confirm(`Are you sure you want to remove Table ${table.tableNumber}?`)) return;
+    try {
+      await ownerService.deleteTable(table.id);
+      toast.success(`Table ${table.tableNumber} removed`);
+      fetchTables();
+    } catch (err) {
+      toast.error(err.response?.data?.error?.message || 'Failed to delete table');
+    }
+  };
+
+  const handleSaveTable = async (e) => {
+    e.preventDefault();
+    if (!tableForm.tableNumber.trim()) {
+      toast.error('Table Number is required');
+      return;
+    }
+    
+    try {
+      setSaving(true);
+      const payload = {
+        tableNumber: tableForm.tableNumber.trim(),
+        capacity: Number(tableForm.capacity),
+        status: tableForm.status,
+        displayOrder: Number(tableForm.displayOrder),
+      };
+
+      if (editingTable) {
+        await ownerService.updateTable(editingTable.id, payload);
+        toast.success(`Table ${tableForm.tableNumber} updated`);
+      } else {
+        await ownerService.createTable(payload);
+        toast.success(`Table ${tableForm.tableNumber} created`);
+      }
+      setModalOpen(false);
+      fetchTables();
+    } catch (err) {
+      toast.error(err.response?.data?.error?.message || 'Failed to save table');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="animate-fade-in space-y-6 max-w-7xl mx-auto">
       <PageHeader
@@ -119,8 +195,16 @@ export default function OwnerTablesPage() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-surface-elevated text-brand border border-brand/20">
               <Radio size={12} className={socketConnected ? 'text-brand animate-pulse' : 'text-text-disabled'} />
-              <span>{socketConnected ? 'Live Floor Synced' : 'Connecting'}</span>
+              <span className="hidden sm:inline">{socketConnected ? 'Live Floor Synced' : 'Connecting'}</span>
             </span>
+            <button
+              type="button"
+              onClick={handleOpenAdd}
+              className="btn-primary text-xs py-2 px-3 inline-flex items-center gap-1.5"
+            >
+              <Plus size={14} />
+              <span>Add Table</span>
+            </button>
             <button
               type="button"
               onClick={fetchTables}
@@ -133,6 +217,26 @@ export default function OwnerTablesPage() {
           </div>
         }
       />
+
+      {error && !loading && (
+        <div className="card p-4 border border-rose-500/30 bg-rose-500/10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <AlertCircle size={20} className="text-rose-400 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-rose-300">Tables Synchronization Notice</p>
+              <p className="text-xs text-rose-400/90">{error}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={fetchTables}
+            className="btn-outline text-xs py-1.5 px-3 border-rose-500/40 text-rose-300 hover:bg-rose-500/20 inline-flex items-center gap-1.5"
+          >
+            <RefreshCw size={13} />
+            <span>Retry</span>
+          </button>
+        </div>
+      )}
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -207,9 +311,11 @@ export default function OwnerTablesPage() {
                         </span>
                       </h3>
                     </div>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase border ${statusConfig.color}`}>
-                      {table.status}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase border ${statusConfig.color}`}>
+                        {table.status}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Active Diner Context */}
@@ -255,7 +361,7 @@ export default function OwnerTablesPage() {
                   <span className="text-[10px] text-text-disabled uppercase tracking-wider font-semibold block mb-1.5">
                     Change Status
                   </span>
-                  <div className="grid grid-cols-2 gap-1.5">
+                  <div className="grid grid-cols-2 gap-1.5 mb-2">
                     {STATUS_OPTIONS.map((opt) => (
                       <button
                         key={opt.value}
@@ -273,11 +379,99 @@ export default function OwnerTablesPage() {
                       </button>
                     ))}
                   </div>
+                  <div className="flex items-center justify-end gap-1 mt-2 border-t border-surface-border/30 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenEdit(table)}
+                      className="p-1.5 rounded-lg text-text-secondary hover:bg-surface-elevated hover:text-text-primary transition-colors"
+                      title="Edit table"
+                    >
+                      <Edit2 size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTable(table)}
+                      className="p-1.5 rounded-lg text-text-secondary hover:bg-surface-elevated hover:text-rose-400 transition-colors"
+                      title="Delete table"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {modalOpen && (
+        <Modal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          title={editingTable ? 'Edit Table' : 'Add New Table'}
+        >
+          <form onSubmit={handleSaveTable} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-text-secondary">Table Number/Name</label>
+                <input
+                  type="text"
+                  required
+                  value={tableForm.tableNumber}
+                  onChange={(e) => setTableForm({ ...tableForm, tableNumber: e.target.value })}
+                  placeholder="e.g. T1, Balcony A"
+                  className="input text-xs w-full"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-text-secondary">Capacity (Seats)</label>
+                <input
+                  type="number"
+                  required
+                  min="1"
+                  value={tableForm.capacity}
+                  onChange={(e) => setTableForm({ ...tableForm, capacity: e.target.value })}
+                  className="input text-xs w-full font-mono"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-text-secondary">Status</label>
+              <select
+                required
+                value={tableForm.status}
+                onChange={(e) => setTableForm({ ...tableForm, status: e.target.value })}
+                className="input text-xs w-full"
+              >
+                {STATUS_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-text-secondary">Display Order</label>
+              <input
+                type="number"
+                required
+                min="0"
+                value={tableForm.displayOrder}
+                onChange={(e) => setTableForm({ ...tableForm, displayOrder: e.target.value })}
+                className="input text-xs w-full font-mono"
+              />
+            </div>
+
+            <div className="pt-2 flex justify-end gap-2">
+              <button type="button" onClick={() => setModalOpen(false)} className="btn-outline text-xs py-2 px-3">
+                Cancel
+              </button>
+              <button type="submit" disabled={saving} className="btn-primary text-xs py-2 px-4">
+                {saving ? 'Saving...' : editingTable ? 'Update Table' : 'Add Table'}
+              </button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );

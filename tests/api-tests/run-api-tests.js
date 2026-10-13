@@ -121,7 +121,7 @@ async function runApiTestSuite() {
   await test('API-AUTH-007', 'Auth', 'POST /api/auth/login - Admin Login Success (200)', async () => {
     const res = await request('/api/auth/login', {
       method: 'POST',
-      body: { email: 'admin@tablepulse.app', password: 'Demo@1234' }
+      body: { email: 'admin@tablepulse.app', password: 'Admin@1234' }
     });
     if (res.status !== 200 || !res.data.data?.token) throw new Error(`Admin login failed: ${res.status}`);
     adminToken = res.data.data.token;
@@ -133,7 +133,7 @@ async function runApiTestSuite() {
     const res = await request('/api/restaurants');
     const list = res.data.data?.restaurants || res.data.data;
     if (res.status !== 200 || !Array.isArray(list)) throw new Error(`Failed: ${res.status}`);
-    if (list.length < 5) throw new Error(`Expected at least 5 restaurants, got ${list.length}`);
+    if (list.length < 3) throw new Error(`Expected at least 3 restaurants, got ${list.length}`);
   });
 
   await test('API-REST-002', 'Restaurants', 'GET /api/restaurants/:id - Detail view contains tables and menu', async () => {

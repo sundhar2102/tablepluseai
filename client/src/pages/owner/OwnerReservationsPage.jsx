@@ -28,8 +28,11 @@ export default function OwnerReservationsPage() {
   const [selectedResId, setSelectedResId] = useState(null);
   const [rejectionReason, setRejectionReason] = useState('');
 
+  const [apiError, setApiError] = useState(null);
+
   const fetchReservations = useCallback(async () => {
     setLoading(true);
+    setApiError(null);
     const params = {};
     if (statusFilter !== 'ALL') params.status = statusFilter;
     if (dateFilter) params.date = dateFilter;
@@ -38,7 +41,9 @@ export default function OwnerReservationsPage() {
     setLoading(false);
 
     if (error) {
-      toast.error(error.message || 'Failed to load reservations');
+      const msg = error.message || 'Failed to load reservations';
+      setApiError(msg);
+      toast.error(msg);
     } else {
       setReservations(data?.reservations || []);
     }
@@ -133,6 +138,27 @@ export default function OwnerReservationsPage() {
           <span>Refresh</span>
         </button>
       </div>
+
+      {/* Error notification banner if API failed */}
+      {apiError && !loading && (
+        <div className="card p-4 border border-rose-500/30 bg-rose-500/10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <AlertCircle size={20} className="text-rose-400 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-rose-300">Reservations Notice</p>
+              <p className="text-xs text-rose-400/90">{apiError}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={fetchReservations}
+            className="btn-outline text-xs py-1.5 px-3 border-rose-500/40 text-rose-300 hover:bg-rose-500/20 inline-flex items-center gap-1.5"
+          >
+            <RefreshCw size={13} />
+            <span>Retry</span>
+          </button>
+        </div>
+      )}
 
       {/* Quick Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

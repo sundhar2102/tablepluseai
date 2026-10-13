@@ -31,17 +31,21 @@ export default function OwnerDashboardPage() {
   const { socket, connected: socketConnected } = useSocket();
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [togglingStatus, setTogglingStatus] = useState(false);
 
   const fetchDashboardStats = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const res = await ownerService.getDashboardStats();
       setData(res);
     } catch (err) {
       console.error('Failed to load owner dashboard stats', err);
-      toast.error(err.response?.data?.error?.message || 'Failed to fetch restaurant dashboard');
+      const msg = err.response?.data?.error?.message || 'Failed to fetch restaurant dashboard';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -121,6 +125,27 @@ export default function OwnerDashboardPage() {
 
   return (
     <div className="animate-fade-in space-y-6 max-w-7xl mx-auto">
+      {/* Error notification banner if API failed */}
+      {error && !loading && (
+        <div className="card p-4 border border-rose-500/30 bg-rose-500/10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <AlertCircle size={20} className="text-rose-400 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-rose-300">Dashboard Synchronization Notice</p>
+              <p className="text-xs text-rose-400/90">{error}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={fetchDashboardStats}
+            className="btn-outline text-xs py-1.5 px-3 border-rose-500/40 text-rose-300 hover:bg-rose-500/20 inline-flex items-center gap-1.5"
+          >
+            <RefreshCw size={13} />
+            <span>Retry</span>
+          </button>
+        </div>
+      )}
+
       {/* Top Banner / Restaurant Header */}
       <div className="card p-5 border border-surface-border bg-gradient-to-r from-surface-card via-surface-card to-brand/5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

@@ -17,20 +17,41 @@ const isNativeApp = () => {
 };
 
 const getSocketUrl = () => {
-  if (isNativeApp()) {
-    if (import.meta.env.VITE_MOBILE_SOCKET_URL) {
-      return import.meta.env.VITE_MOBILE_SOCKET_URL;
-    }
-    if (import.meta.env.VITE_API_HOST) {
-      const host = import.meta.env.VITE_API_HOST.trim();
+  if (typeof window !== 'undefined') {
+    const customSocket = localStorage.getItem('smarttable_socket_url') || localStorage.getItem('tp_socket_url');
+    if (customSocket) return customSocket.trim();
+    const customHost = localStorage.getItem('smarttable_api_host') || localStorage.getItem('tp_api_host');
+    if (customHost) {
+      const host = customHost.trim();
       const port = host.includes(':') ? '' : ':3001';
       return `http://${host}${port}`;
     }
-    const envUrl = import.meta.env.VITE_SOCKET_URL;
-    if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-      return envUrl;
+  }
+
+  if (isNativeApp()) {
+    let resolvedUrl = '';
+    if (import.meta.env.VITE_MOBILE_SOCKET_URL) {
+      resolvedUrl = import.meta.env.VITE_MOBILE_SOCKET_URL.trim();
+    } else if (import.meta.env.VITE_API_HOST) {
+      const host = import.meta.env.VITE_API_HOST.trim();
+      const port = host.includes(':') ? '' : ':3001';
+      resolvedUrl = `http://${host}${port}`;
+    } else {
+      const envUrl = import.meta.env.VITE_SOCKET_URL;
+      if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+        resolvedUrl = envUrl.trim();
+      } else {
+        resolvedUrl = 'http://10.0.2.2:3001';
+      }
     }
-    return 'http://10.0.2.2:3001';
+
+    if (resolvedUrl.includes('localhost') || resolvedUrl.includes('127.0.0.1')) {
+      const lanHost = (import.meta.env.VITE_API_HOST && !import.meta.env.VITE_API_HOST.includes('localhost'))
+        ? import.meta.env.VITE_API_HOST.trim()
+        : '10.0.2.2';
+      resolvedUrl = resolvedUrl.replace(/localhost|127\.0\.0\.1/g, lanHost);
+    }
+    return resolvedUrl;
   }
   return import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
 };

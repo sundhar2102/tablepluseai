@@ -363,9 +363,20 @@ async function deleteMenuItem(user, itemId) {
     throw new AppError(403, 'FORBIDDEN', 'You do not have permission to delete this menu item');
   }
 
-  await pool.query('DELETE FROM menu_items WHERE id = ?', [itemId]);
-  emitMenuUpdated(item.restaurant_id);
-  return { message: 'Menu item deleted successfully' };
+  // Check if item has historical orders
+  const [orderItems] = await pool.query('SELECT COUNT(*) AS cnt FROM order_items WHERE menu_item_id = ?', [itemId]);
+  
+  if (orderItems[0].cnt > 0) {
+    // Soft delete
+    await pool.query('UPDATE menu_items SET is_active = 0 WHERE id = ?', [itemId]);
+    emitMenuUpdated(item.restaurant_id);
+    return { message: 'Menu item deactivated successfully to preserve historical orders' };
+  } else {
+    // Hard delete
+    await pool.query('DELETE FROM menu_items WHERE id = ?', [itemId]);
+    emitMenuUpdated(item.restaurant_id);
+    return { message: 'Menu item deleted successfully' };
+  }
 }
 
 module.exports = {

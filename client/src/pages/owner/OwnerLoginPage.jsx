@@ -100,9 +100,50 @@ export default function OwnerLoginPage() {
       </div>
 
       {import.meta.env.DEV && (
-        <div className="mt-6 p-3 bg-surface-card border border-surface-border rounded-lg text-xs text-text-secondary max-w-sm w-full">
-          <p className="font-semibold text-accent mb-1">🧪 Dev Test Account</p>
-          <p>Email: owner@demo.com | Password: Demo@1234</p>
+        <div className="mt-6 p-3 bg-surface-card border border-surface-border rounded-lg text-xs text-text-secondary max-w-sm w-full space-y-2">
+          <p className="font-semibold text-accent">🧪 Registered Partner Restaurant Owners (Demo@1234)</p>
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => setForm({ email: 'owner@demo.com', password: 'Demo@1234' })}
+              className="text-left w-full hover:text-brand flex justify-between"
+            >
+              <span>The Spice Pavilion:</span>
+              <code className="text-brand">owner@demo.com</code>
+            </button>
+            <button
+              type="button"
+              onClick={() => setForm({ email: 'owner2@demo.com', password: 'Demo@1234' })}
+              className="text-left w-full hover:text-brand flex justify-between"
+            >
+              <span>Coastal Catch:</span>
+              <code className="text-brand">owner2@demo.com</code>
+            </button>
+            <button
+              type="button"
+              onClick={() => setForm({ email: 'owner3@demo.com', password: 'Demo@1234' })}
+              className="text-left w-full hover:text-brand flex justify-between"
+            >
+              <span>Aura Bistro:</span>
+              <code className="text-brand">owner3@demo.com</code>
+            </button>
+            <button
+              type="button"
+              onClick={() => setForm({ email: 'owner4@demo.com', password: 'Demo@1234' })}
+              className="text-left w-full hover:text-brand flex justify-between"
+            >
+              <span>Madras Thali:</span>
+              <code className="text-brand">owner4@demo.com</code>
+            </button>
+            <button
+              type="button"
+              onClick={() => setForm({ email: 'owner5@demo.com', password: 'Demo@1234' })}
+              className="text-left w-full hover:text-brand flex justify-between"
+            >
+              <span>Sakura Ramen:</span>
+              <code className="text-brand">owner5@demo.com</code>
+            </button>
+          </div>
         </div>
       )}
     </div>

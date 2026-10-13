@@ -25,6 +25,21 @@ export const ownerService = {
     return res.data.data;
   },
 
+  async createTable(data) {
+    const res = await api.post('/owner/tables', data);
+    return res.data.data;
+  },
+
+  async updateTable(tableId, data) {
+    const res = await api.patch(`/owner/tables/${tableId}`, data);
+    return res.data.data;
+  },
+
+  async deleteTable(tableId) {
+    const res = await api.delete(`/owner/tables/${tableId}`);
+    return res.data.data;
+  },
+
   async updateTableStatus(tableId, status) {
     const res = await api.patch(`/owner/tables/${tableId}/status`, { status });
     return res.data.data;

@@ -121,7 +121,9 @@ export default function RestaurantDetailPage() {
     setLoading(false);
 
     if (apiErr) {
-      setError(apiErr.message || 'Restaurant not found');
+      setError(apiErr.message || 'Unable to load restaurant details.');
+    } else if (!data) {
+      setError('Restaurant not found.');
     } else {
       setRestaurant(data);
     }
@@ -467,16 +469,50 @@ export default function RestaurantDetailPage() {
     );
   }
 
-  // ── Error / Not Found State ────────────────────────────────────────
-  if (error || !restaurant) {
+  // ── Error State ───────────────────────────────────────────────────
+  if (error) {
+    const isNotFound = error.toLowerCase().includes('not found');
     return (
       <div className="page-container py-16 text-center space-y-4 max-w-md mx-auto">
         <div className="w-14 h-14 rounded-2xl bg-status-occupied/10 border border-status-occupied/30 text-status-occupied flex items-center justify-center mx-auto">
           <AlertCircle size={28} />
         </div>
-        <h2 className="text-xl font-bold text-text-primary">Restaurant Unavailable</h2>
+        <h2 className="text-xl font-bold text-text-primary">
+          {isNotFound ? 'Restaurant not found.' : 'Unable to load restaurant details.'}
+        </h2>
+        <p className="text-sm text-text-secondary leading-relaxed">{error}</p>
+        <div className="flex items-center justify-center gap-3 pt-2 flex-wrap">
+          <button
+            onClick={() => navigate('/app')}
+            className="btn-primary btn-sm inline-flex items-center gap-1.5"
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Discovery</span>
+          </button>
+          {!isNotFound && (
+            <button
+              onClick={fetchDetails}
+              className="btn-sm inline-flex items-center gap-1.5 border border-brand text-brand hover:bg-brand/10 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors"
+            >
+              <RefreshCw size={14} />
+              <span>Retry</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Not Found (safety fallback) ───────────────────────────────────
+  if (!restaurant) {
+    return (
+      <div className="page-container py-16 text-center space-y-4 max-w-md mx-auto">
+        <div className="w-14 h-14 rounded-2xl bg-status-occupied/10 border border-status-occupied/30 text-status-occupied flex items-center justify-center mx-auto">
+          <AlertCircle size={28} />
+        </div>
+        <h2 className="text-xl font-bold text-text-primary">Restaurant not found.</h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          {error || 'This dining spot could not be found or has an invalid identifier.'}
+          This dining spot could not be found or has an invalid identifier.
         </p>
         <div className="pt-2">
           <button

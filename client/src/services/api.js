@@ -12,22 +12,54 @@ export const isNativeApp = () => {
   );
 };
 
+export const NETWORK_ERROR_FRIENDLY_MESSAGE =
+  'Unable to connect to Smart Table AI server. Please check that the server is running and your phone is connected to the same Wi-Fi.';
+
 export const getApiBaseUrl = () => {
-  if (isNativeApp()) {
-    if (import.meta.env.VITE_MOBILE_API_URL) {
-      return import.meta.env.VITE_MOBILE_API_URL;
-    }
-    if (import.meta.env.VITE_API_HOST) {
-      const host = import.meta.env.VITE_API_HOST.trim();
+  // 1. Runtime override support (allows setting without rebuilding APK if LAN IP changes)
+  if (typeof window !== 'undefined') {
+    const customUrl = localStorage.getItem('smarttable_api_url') || localStorage.getItem('tp_api_url');
+    if (customUrl) return customUrl.trim();
+    const customHost = localStorage.getItem('smarttable_api_host') || localStorage.getItem('tp_api_host');
+    if (customHost) {
+      const host = customHost.trim();
       const port = host.includes(':') ? '' : ':3001';
       return `http://${host}${port}/api`;
     }
-    const envUrl = import.meta.env.VITE_API_URL;
-    if (envUrl && (envUrl.startsWith('http://') || envUrl.startsWith('https://'))) {
-      return envUrl;
-    }
-    return 'http://10.0.2.2:3001/api';
   }
+
+  // 2. Native mobile app environment (Capacitor on Android/iOS)
+  if (isNativeApp()) {
+    let resolvedUrl = '';
+
+    if (import.meta.env.VITE_MOBILE_API_URL) {
+      resolvedUrl = import.meta.env.VITE_MOBILE_API_URL.trim();
+    } else if (import.meta.env.VITE_API_HOST) {
+      const host = import.meta.env.VITE_API_HOST.trim();
+      const port = host.includes(':') ? '' : ':3001';
+      resolvedUrl = `http://${host}${port}/api`;
+    } else {
+      const envUrl = import.meta.env.VITE_API_URL;
+      if (envUrl && (envUrl.startsWith('http://') || envUrl.startsWith('https://'))) {
+        resolvedUrl = envUrl.trim();
+      } else {
+        // Fallback for native development: active LAN IP
+        resolvedUrl = 'http://10.0.2.2:3001/api';
+      }
+    }
+
+    // Guard: Physical Android devices cannot use localhost or 127.0.0.1
+    if (resolvedUrl.includes('localhost') || resolvedUrl.includes('127.0.0.1')) {
+      const lanHost = (import.meta.env.VITE_API_HOST && !import.meta.env.VITE_API_HOST.includes('localhost'))
+        ? import.meta.env.VITE_API_HOST.trim()
+        : '10.0.2.2';
+      resolvedUrl = resolvedUrl.replace(/localhost|127\.0\.0\.1/g, lanHost);
+    }
+
+    return resolvedUrl;
+  }
+
+  // 3. Web environment (Vite proxy handles '/api' -> http://localhost:3001)
   return import.meta.env.VITE_API_URL || '/api';
 };
 
@@ -77,7 +109,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ── Response interceptor: handle auth errors globally ────────────
+// ── Response interceptor: handle auth & network errors globally ────────────
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -88,7 +120,18 @@ api.interceptors.response.use(
       // Clear stored auth and redirect to login
       localStorage.removeItem('tp_token');
       localStorage.removeItem('tp_user');
+      localStorage.removeItem('smarttable_token');
+      localStorage.removeItem('smarttable_user');
       window.location.href = '/login';
+    }
+
+    // User-friendly network error enhancement
+    if (!error.response || error.code === 'ECONNABORTED' || error.message?.includes('Network Error')) {
+      error.isNetworkError = true;
+      error.originalMessage = error.message;
+      if (!error.response) {
+        error.message = NETWORK_ERROR_FRIENDLY_MESSAGE;
+      }
     }
 
     return Promise.reject(error);

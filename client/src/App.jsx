@@ -145,6 +145,7 @@ export default function App() {
                 </CustomerLayout>
               </ProtectedRoute>
             } />
+            {/* Existing queue routes */}
             <Route path="/app/queue" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
@@ -153,6 +154,14 @@ export default function App() {
               </ProtectedRoute>
             } />
             <Route path="/app/queue/:restaurantId" element={
+              <ProtectedRoute requiredRole="customer">
+                <CustomerLayout>
+                  <QueuePage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            } />
+            {/* NEW route for direct queue ID view */}
+            <Route path="/app/queues/:id" element={
               <ProtectedRoute requiredRole="customer">
                 <CustomerLayout>
                   <QueuePage />

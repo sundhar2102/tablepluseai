@@ -154,6 +154,27 @@ export default function OwnerOrdersPage() {
         </button>
       </div>
 
+      {/* Error notification banner if API failed */}
+      {error && !loading && (
+        <div className="card p-4 border border-rose-500/30 bg-rose-500/10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <AlertCircle size={20} className="text-rose-400 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-rose-300">Kitchen Orders Notice</p>
+              <p className="text-xs text-rose-400/90">{error}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={fetchOrders}
+            className="btn-outline text-xs py-1.5 px-3 border-rose-500/40 text-rose-300 hover:bg-rose-500/20 inline-flex items-center gap-1.5"
+          >
+            <RefreshCw size={13} />
+            <span>Retry</span>
+          </button>
+        </div>
+      )}
+
       {/* Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-surface-border">
         {STATUS_TABS.map((tab) => {

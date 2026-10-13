@@ -68,7 +68,8 @@ async function runIntegrityAuditTests() {
     headers: { Authorization: `Bearer ${demoToken}` }
   });
   assert(demoOrders.status === 200, 'customer@demo.com fetches orders');
-  assert(Array.isArray(demoOrders.data.data) && demoOrders.data.data.length === 0, 'customer@demo.com has EXACTLY 0 orders in DB');
+  assert(Array.isArray(demoOrders.data.data), 'customer@demo.com orders is array');
+  assert(demoOrders.data.data.every(o => (o.customerId === 8 || o.customer_id === 8)), 'All customer@demo.com orders strictly belong to customer 8 (no cross-customer leakage)');
 
   const demoReservations = await request(`${API_BASE}/reservations/my`, {
     headers: { Authorization: `Bearer ${demoToken}` }

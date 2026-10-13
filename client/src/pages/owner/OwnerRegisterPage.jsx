@@ -73,6 +73,8 @@ export default function OwnerRegisterPage() {
       phone: form.phone.trim() || undefined,
       password: form.password,
       role: 'owner',
+      restaurantName: form.restaurantName.trim(),
+      city: form.city,
     });
     setLoading(false);
 

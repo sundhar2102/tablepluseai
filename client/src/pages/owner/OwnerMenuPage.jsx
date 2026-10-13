@@ -17,12 +17,14 @@ import {
 } from 'lucide-react';
 import { ownerService } from '../../services/ownerService';
 import { menuService } from '../../services/menuService';
+import { useSocket } from '../../context/SocketContext';
 import PageHeader from '../../components/common/PageHeader';
 import Modal from '../../components/common/Modal';
 import LoadingState from '../../components/common/LoadingState';
 import toast from 'react-hot-toast';
 
 export default function OwnerMenuPage() {
+  const { socket, connected: socketConnected } = useSocket();
   const [restaurant, setRestaurant] = useState(null);
   const [menu, setMenu] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,6 +64,27 @@ export default function OwnerMenuPage() {
   useEffect(() => {
     fetchMenu();
   }, [fetchMenu]);
+
+  useEffect(() => {
+    if (!socket || !restaurant?.id) return;
+
+    socket.emit('join:restaurant', restaurant.id);
+    socket.emit('join:owner');
+
+    const handleMenuUpdate = () => {
+      fetchMenu();
+    };
+
+    socket.on('menu:updated', handleMenuUpdate);
+    socket.on('menu:item_updated', handleMenuUpdate);
+    socket.on('item:availability_changed', handleMenuUpdate);
+
+    return () => {
+      socket.off('menu:updated', handleMenuUpdate);
+      socket.off('menu:item_updated', handleMenuUpdate);
+      socket.off('item:availability_changed', handleMenuUpdate);
+    };
+  }, [socket, restaurant?.id, fetchMenu]);
 
   const categories = menu?.categories || [];
   const allItems = menu?.allItems || [];

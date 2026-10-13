@@ -18,7 +18,7 @@ import { useSocket } from '../../context/SocketContext';
 import toast from 'react-hot-toast';
 
 export default function QueuePage() {
-  const { restaurantId } = useParams();
+  const { id: queueId } = useParams();
   const navigate = useNavigate();
   const { socket } = useSocket();
 
@@ -99,11 +99,9 @@ export default function QueuePage() {
     }
   };
 
-  // Find active queue (waiting or called)
+  // Find active queue by explicit queue ID (if present) or fallback to any waiting/called queue
   const activeQueue = queues.find((q) =>
-    restaurantId
-      ? Number(q.restaurantId) === Number(restaurantId) && ['waiting', 'called'].includes(q.status)
-      : ['waiting', 'called'].includes(q.status)
+    Number(q.id) === Number(queueId) && ['waiting', 'called'].includes(q.status)
   ) || queues.find((q) => ['waiting', 'called'].includes(q.status));
 
   const pastQueues = queues.filter((q) => q.id !== activeQueue?.id);

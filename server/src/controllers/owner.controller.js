@@ -87,6 +87,23 @@ const markNotificationRead = catchAsync(async (req, res) => {
   sendSuccess(res, 200, data, 'Notification marked as read');
 });
 
+const createOwnerTable = catchAsync(async (req, res) => {
+  const data = await ownerService.createOwnerTable(req.user, req.body);
+  sendSuccess(res, 201, data, 'Table created successfully');
+});
+
+const updateOwnerTable = catchAsync(async (req, res) => {
+  const { tableId } = req.params;
+  const data = await ownerService.updateOwnerTable(req.user, Number(tableId), req.body);
+  sendSuccess(res, 200, data, 'Table updated successfully');
+});
+
+const deleteOwnerTable = catchAsync(async (req, res) => {
+  const { tableId } = req.params;
+  const data = await ownerService.deleteOwnerTable(req.user, Number(tableId));
+  sendSuccess(res, 200, data, 'Table deleted successfully');
+});
+
 module.exports = {
   getDashboardStats,
   getOwnerTables,
@@ -97,4 +114,7 @@ module.exports = {
   getOwnerAnalytics,
   getOwnerNotifications,
   markNotificationRead,
+  createOwnerTable,
+  updateOwnerTable,
+  deleteOwnerTable,
 };

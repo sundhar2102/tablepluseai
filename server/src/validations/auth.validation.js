@@ -11,7 +11,7 @@ const registerSchema = Joi.object({
   email: Joi.string().trim().email().lowercase().required()
     .messages({ 'string.email': 'Please provide a valid email address' }),
 
-  phone: Joi.string().trim().pattern(/^\+?[0-9\s\-]{7,20}$/).optional()
+  phone: Joi.string().trim().allow(null, '').pattern(/^\+?[0-9\s\-]{7,20}$/).optional()
     .messages({ 'string.pattern.base': 'Please provide a valid phone number' }),
 
   password: Joi.string().min(8).max(72).required()
@@ -21,6 +21,9 @@ const registerSchema = Joi.object({
     }),
 
   role: Joi.string().valid('customer', 'owner').default('customer'),
+  
+  restaurantName: Joi.string().trim().allow(null, '').optional(),
+  city: Joi.string().trim().allow(null, '').optional(),
 });
 
 const loginSchema = Joi.object({

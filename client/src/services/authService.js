@@ -1,4 +1,4 @@
-import api from './api';
+import api, { NETWORK_ERROR_FRIENDLY_MESSAGE } from './api';
 
 /**
  * Auth service — all API calls related to authentication.
@@ -14,7 +14,7 @@ export const authService = {
     } catch (err) {
       console.error('[authService] register error:', err);
       const errMsg = err.response?.data?.error?.message 
-        || (err.response ? 'Registration failed' : `Network error: cannot reach server at ${api.defaults.baseURL || 'endpoint'} (${err.message})`);
+        || (err.response ? 'Registration failed' : NETWORK_ERROR_FRIENDLY_MESSAGE);
       return { data: null, error: err.response?.data?.error || { message: errMsg } };
     }
   },
@@ -32,7 +32,7 @@ export const authService = {
     } catch (err) {
       console.error('[authService] login error:', err);
       const errMsg = err.response?.data?.error?.message 
-        || (err.response ? 'Login failed' : `Network error: cannot reach server at ${api.defaults.baseURL || 'endpoint'} (${err.message})`);
+        || (err.response ? 'Login failed' : NETWORK_ERROR_FRIENDLY_MESSAGE);
       return { data: null, error: err.response?.data?.error || { message: errMsg } };
     }
   },

@@ -22,7 +22,7 @@ export default function RestaurantCard({ restaurant }) {
 
   return (
     <Link
-      to={`/app/restaurants/${id}`}
+      to={`/app/restaurants/${id ?? restaurant._id}`}
       className="card card-hover flex flex-col overflow-hidden group transition-all duration-300 border border-surface-border hover:border-brand/50 shadow-lg"
     >
       {/* Cover Image + Overlay Badges */}

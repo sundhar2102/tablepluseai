@@ -42,3 +42,6 @@ coverage/
 tests/selenium-tests/screenshots/*.png
 tests/appium-tests/screenshots/*.png
 client/.vscode/
+*.bak
+*.apk
+/android/

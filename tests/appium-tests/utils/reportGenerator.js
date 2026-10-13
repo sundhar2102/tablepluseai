@@ -82,6 +82,17 @@ function generateMobileHtmlReport(testResults, summary) {
 
   fs.writeFileSync(path.join(reportsDir, 'appium-report.html'), html);
   fs.writeFileSync(path.join(reportsDir, 'appium-results.json'), JSON.stringify({ summary, testResults }, null, 2));
+
+  // Also sync to root reports directory
+  const rootReportsDir = path.resolve(__dirname, '../../../reports');
+  if (fs.existsSync(rootReportsDir)) {
+    fs.writeFileSync(path.join(rootReportsDir, 'appium-report.html'), html);
+    const rootAppiumDir = path.join(rootReportsDir, 'appium');
+    if (!fs.existsSync(rootAppiumDir)) {
+      fs.mkdirSync(rootAppiumDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(rootAppiumDir, 'appium-results.json'), JSON.stringify({ summary, testResults }, null, 2));
+  }
 }
 
 module.exports = { generateMobileHtmlReport };

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "37db2020-ae9b-4db9-94d4-3a7da8184171"
+      }
+    },
+    "android": {
+      "package": "com.sundharreddy.smarttableai"
+    }
+  }
+}

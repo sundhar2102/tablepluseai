@@ -23,7 +23,9 @@ const { generalLimiter } = require('./middleware/rateLimiter');
 const app = express();
 
 // ── Security headers ──────────────────────────────────────────────────────
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false
+}));
 
 // ── CORS ──────────────────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -51,7 +53,7 @@ const corsOptions = {
     if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
-    return callback(new Error('Not allowed by CORS'));
+    return callback(null, false);
   },
   credentials: true,
   methods:     ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -74,20 +76,25 @@ app.use('/api', generalLimiter);
 // ── Health check ──────────────────────────────────────────────────────────
 app.get('/api/health', async (req, res) => {
   let dbStatus = 'unknown';
+  let databaseConnected = false;
   try {
     await pool.query('SELECT 1');
     dbStatus = 'connected';
+    databaseConnected = true;
   } catch {
     dbStatus = 'disconnected';
+    databaseConnected = false;
   }
 
   res.json({
-    success:     true,
-    status:      'ok',
-    environment: process.env.NODE_ENV || 'development',
-    timestamp:   new Date().toISOString(),
-    database:    dbStatus,
-    version:     '1.0.0',
+    success:           true,
+    service:           'Smart Table AI API',
+    databaseConnected: databaseConnected,
+    status:            'ok',
+    environment:       process.env.NODE_ENV || 'development',
+    timestamp:         new Date().toISOString(),
+    database:          dbStatus,
+    version:           '1.0.0',
   });
 });
 
@@ -102,6 +109,65 @@ app.use('/api', orderRoutes);
 app.use('/api', aiRoutes);
 app.use('/api', ownerRoutes);
 app.use('/api', adminRoutes);
+
+// ── Mobile App Download Routes ───────────────────────────────────────────
+const fs = require('fs');
+const apkFilePath = path.resolve(__dirname, '../../smart-table-ai.apk');
+
+app.get('/download/app', (req, res) => {
+  if (!fs.existsSync(apkFilePath)) {
+    return res.status(404).send('APK file not found on server.');
+  }
+  res.download(apkFilePath, 'smart-table-ai.apk', (err) => {
+    if (err && !res.headersSent) {
+      res.status(500).send('Error downloading APK.');
+    }
+  });
+});
+
+app.get('/download', (req, res) => {
+  const host = req.get('host') || '10.157.15.46:3001';
+  const downloadUrl = `${req.protocol}://${host}/download/app`;
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Download Smart Table AI Mobile App</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
+        .card { background: #1e293b; border-radius: 16px; padding: 32px 24px; max-width: 420px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid #334155; }
+        h1 { margin: 0 0 8px 0; font-size: 24px; color: #38bdf8; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+        .btn { display: inline-block; width: 100%; box-sizing: border-box; background: #0284c7; color: white; text-decoration: none; padding: 14px 20px; border-radius: 10px; font-weight: 600; font-size: 16px; transition: background 0.2s; margin-top: 16px; }
+        .btn:hover { background: #0369a1; }
+        .badge { background: #0369a1; color: #e0f2fe; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; display: inline-block; margin-bottom: 16px; }
+        .qr-box { background: white; padding: 12px; border-radius: 12px; display: inline-block; margin: 12px auto; }
+        .info { margin-top: 16px; font-size: 12px; color: #64748b; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div class="badge">Android APK (Direct Install)</div>
+        <h1>Smart Table AI</h1>
+        <p>Real-time restaurant table booking, queue & dining assistant</p>
+        
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(downloadUrl)}" alt="Scan to download" width="180" height="180" />
+        </div>
+        <p style="margin: 8px 0 0 0; font-size: 12px; color: #cbd5e1;">Scan QR code or click below to install</p>
+
+        <a class="btn" href="/download/app" download>📥 Download Android APK (4.3 MB)</a>
+
+        <div class="info">
+          Direct Link: <br><code style="color: #38bdf8; word-break: break-all;">${downloadUrl}</code>
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+});
 
 // ── Stage 6 future routes (uncomment as implemented) ──────────────────────
 // app.use('/api', paymentRoutes);

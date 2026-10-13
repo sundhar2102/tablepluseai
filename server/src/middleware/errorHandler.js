@@ -33,6 +33,14 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // Database connection error
+  if (err.code === 'ECONNREFUSED' || err.message?.includes('ECONNREFUSED')) {
+    return res.status(503).json({
+      success: false,
+      error: { code: 'DATABASE_UNAVAILABLE', message: 'Backend unavailable: Database connection failed.' },
+    });
+  }
+
   // Unknown / programming errors — do not expose internal details
   return res.status(500).json({
     success: false,

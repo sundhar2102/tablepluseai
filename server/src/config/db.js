@@ -25,7 +25,7 @@ async function connectDB() {
     conn.release();
   } catch (err) {
     console.error('[DB] ❌ MySQL connection failed:', err.message);
-    process.exit(1);
+    console.error('[DB] ⚠️ Server will continue to run, but database features will fail until MySQL is available.');
   }
 }
 

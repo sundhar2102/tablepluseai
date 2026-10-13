@@ -19,6 +19,10 @@ router.get('/owner/stats', ownerController.getDashboardStats);
 
 // Owner Tables Management
 router.get('/owner/tables', ownerController.getOwnerTables);
+router.post('/owner/tables', ownerController.createOwnerTable);
+router.patch('/owner/tables/:tableId', ownerController.updateOwnerTable);
+router.delete('/owner/tables/:tableId', ownerController.deleteOwnerTable);
+
 router.patch(
   '/owner/tables/:tableId/status',
   validate(updateOwnerTableStatusSchema),

@@ -375,8 +375,8 @@ async function getRestaurantById(idOrSlug, userLat = null, userLng = null) {
     throw new AppError(404, 'NOT_FOUND', `Restaurant #${strId} not found`);
   }
 
-  if (restaurant.is_active === 0 || restaurant.approval_status === 'pending' || restaurant.approval_status === 'suspended') {
-    throw new AppError(400, 'INACTIVE_RESTAURANT', 'Restaurant is not currently active');
+  if (!restaurant.is_active) {
+    throw new AppError(400, 'INACTIVE_RESTAURANT', 'Restaurant is currently inactive or not approved');
   }
 
   return await buildOperationalRestaurantResponse(restaurant, userLat, userLng);

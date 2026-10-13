@@ -48,10 +48,10 @@ async function getDashboardStats(user) {
 
   // 1. Fetch tables
   const [tables] = await pool.query(
-    `SELECT id, table_number, capacity, status, status_changed_at, occupied_since, display_order 
-     FROM tables 
-     WHERE restaurant_id = ? 
-     ORDER BY display_order ASC, table_number ASC`,
+     `SELECT id, table_number, capacity, status, status_changed_at, occupied_since, display_order 
+      FROM tables 
+      WHERE restaurant_id = ?
+      ORDER BY display_order ASC, table_number ASC`,
     [restaurantId]
   );
 
@@ -295,10 +295,10 @@ async function getOwnerTables(user) {
   const restaurantId = restaurant.id;
 
   const [tables] = await pool.query(
-    `SELECT id, restaurant_id, table_number, capacity, status, status_changed_at, occupied_since, display_order 
-     FROM tables 
-     WHERE restaurant_id = ? 
-     ORDER BY display_order ASC, table_number ASC`,
+     `SELECT id, restaurant_id, table_number, capacity, status, status_changed_at, occupied_since, display_order 
+      FROM tables 
+      WHERE restaurant_id = ?
+      ORDER BY display_order ASC, table_number ASC`,
     [restaurantId]
   );
 
@@ -722,10 +722,10 @@ async function getOwnerAnalytics(user, timeframe = '7d') {
 
   // 6. Current Table utilization
   const [tableCountRows] = await pool.query(
-    `SELECT status, COUNT(*) as count 
-     FROM tables 
-     WHERE restaurant_id = ? 
-     GROUP BY status`,
+     `SELECT status, COUNT(*) as count 
+      FROM tables 
+      WHERE restaurant_id = ?
+      GROUP BY status`,
     [restaurantId]
   );
   const tableSummary = { available: 0, occupied: 0, reserved: 0, cleaning: 0, total: 0 };
@@ -822,6 +822,93 @@ async function markNotificationAsRead(user, notificationId) {
   return { success: true };
 }
 
+/**
+ * Owner: Create a new table
+ */
+async function createOwnerTable(user, data) {
+  const restaurant = await getOwnerRestaurant(user.userId, user.role);
+  const restaurantId = restaurant.id;
+  const qrToken = require('crypto').randomUUID();
+
+  const [result] = await pool.query(
+    'INSERT INTO tables (restaurant_id, table_number, capacity, status, qr_token, display_order) VALUES (?, ?, ?, ?, ?, ?)',
+    [
+      restaurantId,
+      data.tableNumber,
+      data.capacity || 4,
+      data.status || 'available',
+      qrToken,
+      data.displayOrder || 0
+    ]
+  );
+  
+  socketEmitter.emitToRestaurant(restaurantId, 'restaurant:availability_updated', { timestamp: new Date() });
+  return await getOwnerTables(user);
+}
+
+/**
+ * Owner: Update a table
+ */
+async function updateOwnerTable(user, tableId, data) {
+  const restaurant = await getOwnerRestaurant(user.userId, user.role);
+  
+  const [tRows] = await pool.query('SELECT * FROM tables WHERE id = ?', [tableId]);
+  if (!tRows.length) throw new AppError(404, 'NOT_FOUND', 'Table not found');
+  if (Number(tRows[0].restaurant_id) !== Number(restaurant.id)) throw new AppError(403, 'FORBIDDEN', 'Access denied');
+
+  const updates = [];
+  const params = [];
+  
+  if (data.tableNumber !== undefined) {
+    updates.push('table_number = ?');
+    params.push(data.tableNumber);
+  }
+  if (data.capacity !== undefined) {
+    updates.push('capacity = ?');
+    params.push(data.capacity);
+  }
+  if (data.displayOrder !== undefined) {
+    updates.push('display_order = ?');
+    params.push(data.displayOrder);
+  }
+
+  if (updates.length > 0) {
+    params.push(tableId);
+    await pool.query(`UPDATE tables SET ${updates.join(', ')} WHERE id = ?`, params);
+  }
+  
+  socketEmitter.emitToRestaurant(restaurant.id, 'restaurant:availability_updated', { timestamp: new Date() });
+  return await getOwnerTables(user);
+}
+
+/**
+ * Owner: Delete a table
+ */
+async function deleteOwnerTable(user, tableId) {
+  const restaurant = await getOwnerRestaurant(user.userId, user.role);
+  
+  const [tRows] = await pool.query('SELECT * FROM tables WHERE id = ?', [tableId]);
+  if (!tRows.length) throw new AppError(404, 'NOT_FOUND', 'Table not found');
+  if (Number(tRows[0].restaurant_id) !== Number(restaurant.id)) throw new AppError(403, 'FORBIDDEN', 'Access denied');
+  
+  // check orders history
+  const [orders] = await pool.query('SELECT COUNT(*) AS cnt FROM orders WHERE table_id = ?', [tableId]);
+  if (orders[0].cnt > 0) {
+    throw new AppError(400, 'CANNOT_DELETE_TABLE', 'Cannot delete table with existing order history');
+  } else {
+    // check reservations
+    const [res] = await pool.query('SELECT COUNT(*) AS cnt FROM reservations WHERE table_id = ?', [tableId]);
+    if (res[0].cnt > 0) {
+      throw new AppError(400, 'CANNOT_DELETE_TABLE', 'Cannot delete table with existing reservations');
+    } else {
+      await pool.query('DELETE FROM tables WHERE id = ?', [tableId]);
+    }
+  }
+
+  socketEmitter.emitToRestaurant(restaurant.id, 'restaurant:availability_updated', { timestamp: new Date() });
+  return { message: 'Table deleted successfully' };
+}
+
 module.exports = {
   getOwnerRestaurant,
   assertOwnership,
@@ -834,4 +921,7 @@ module.exports = {
   getOwnerAnalytics,
   getOwnerNotifications,
   markNotificationAsRead,
+  createOwnerTable,
+  updateOwnerTable,
+  deleteOwnerTable,
 };
