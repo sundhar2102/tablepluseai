@@ -9,7 +9,7 @@ on:
 
 jobs:
   appium-mobile-tests:
-    runs-on: macos-13 # Supports hardware virtualization for Android Emulator
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
@@ -29,6 +29,8 @@ jobs:
 
     - name: Set up Android SDK
       uses: android-actions/setup-android@v4
+      with:
+        packages: 'platform-tools'
 
     - name: Install Dependencies & Appium
       run: |
@@ -41,7 +43,8 @@ jobs:
     - name: Start Appium Server
       run: |
         appium --port 4723 --log appium.log &
-        npx wait-on -t 20000 http://127.0.0.1:4723/status || true
+        sleep 5
+        curl -s http://127.0.0.1:4723/status || true
 
     - name: Run Appium Mobile E2E Test Suite
       run: |
